@@ -1,0 +1,109 @@
+import json
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
+from models.resume import ResumeData
+
+load_dotenv()
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# GPT-4o-mini pricing (USD per 1M tokens)
+PRICE_INPUT_PER_1M = 0.150
+PRICE_OUTPUT_PER_1M = 0.600
+USD_TO_INR = 84.0
+
+
+def _log_usage(usage, label: str = "Resume Enhancement"):
+    input_tokens = usage.prompt_tokens
+    output_tokens = usage.completion_tokens
+    total_tokens = usage.total_tokens
+
+    input_cost_usd = (input_tokens / 1_000_000) * PRICE_INPUT_PER_1M
+    output_cost_usd = (output_tokens / 1_000_000) * PRICE_OUTPUT_PER_1M
+    total_cost_usd = input_cost_usd + output_cost_usd
+    total_cost_inr = total_cost_usd * USD_TO_INR
+
+    print("\n" + "=" * 50)
+    print(f"  OpenAI Usage — {label}")
+    print("=" * 50)
+    print(f"  Model         : gpt-4o-mini")
+    print(f"  Input tokens  : {input_tokens:,}")
+    print(f"  Output tokens : {output_tokens:,}")
+    print(f"  Total tokens  : {total_tokens:,}")
+    print(f"  Cost (USD)    : ${total_cost_usd:.6f}")
+    print(f"  Cost (INR)    : ₹{total_cost_inr:.4f}")
+    print("=" * 50 + "\n")
+
+
+def enhance_resume_with_llm(data: ResumeData) -> dict:
+    experience_text = ""
+    for exp in data.work_experience:
+        experience_text += f"""
+        Company: {exp.company}
+        Role: {exp.role}
+        Duration: {exp.start_date} - {exp.end_date}
+        Responsibilities: {exp.responsibilities}
+        """
+
+    projects_text = ""
+    for proj in data.projects:
+        projects_text += f"""
+        Project: {proj.name}
+        Description: {proj.description}
+        Technologies: {proj.technologies}
+        """
+
+    prompt = f"""
+You are a professional resume writer. Enhance the following resume data and return a JSON response.
+
+Candidate: {data.personal_info.full_name}
+Target Role: {data.job_title or 'Not specified'}
+
+Work Experience:
+{experience_text}
+
+Projects:
+{projects_text}
+
+Skills: {', '.join(data.skills)}
+
+User's Summary (if any): {data.personal_info.summary}
+
+Return a JSON object with these exact keys:
+{{
+  "professional_summary": "2-3 sentence impactful professional summary",
+  "enhanced_experience": [
+    {{
+      "company": "company name",
+      "role": "job title",
+      "start_date": "start",
+      "end_date": "end",
+      "bullets": ["bullet 1 with action verb + metric", "bullet 2", "bullet 3", "bullet 4"]
+    }}
+  ],
+  "enhanced_projects": [
+    {{
+      "name": "project name",
+      "description": "improved 1-2 line description",
+      "technologies": "tech stack"
+    }}
+  ]
+}}
+
+Rules:
+- Use strong action verbs (Developed, Implemented, Optimized, Led, Built, etc.)
+- Add measurable impact where possible
+- Keep bullets concise and ATS-friendly
+- Return ONLY valid JSON, no markdown
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        response_format={"type": "json_object"},
+        temperature=0.7,
+    )
+
+    _log_usage(response.usage)
+    return json.loads(response.choices[0].message.content)
