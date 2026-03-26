@@ -32,6 +32,7 @@ const defaultResumeData: ResumeData = {
   skills: [],
   projects: [{ name: "", description: "", technologies: "", link: "" }],
   job_title: "",
+  template: "classic" as const,
 };
 
 export default function BuilderPage() {

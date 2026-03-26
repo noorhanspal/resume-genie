@@ -31,6 +31,8 @@ export interface Project {
   link: string;
 }
 
+export type TemplateId = "classic" | "modern" | "minimal";
+
 export interface ResumeData {
   personal_info: PersonalInfo;
   work_experience: WorkExperience[];
@@ -38,4 +40,5 @@ export interface ResumeData {
   skills: string[];
   projects: Project[];
   job_title: string;
+  template: TemplateId;
 }

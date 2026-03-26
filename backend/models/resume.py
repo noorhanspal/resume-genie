@@ -42,3 +42,4 @@ class ResumeData(BaseModel):
     skills: List[str]
     projects: List[Project]
     job_title: Optional[str] = ""
+    template: Optional[str] = "classic"
