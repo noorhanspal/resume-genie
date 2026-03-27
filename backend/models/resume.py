@@ -43,3 +43,8 @@ class ResumeData(BaseModel):
     projects: List[Project]
     job_title: Optional[str] = ""
     template: Optional[str] = "classic"
+
+
+class ATSRequest(BaseModel):
+    resume_data: ResumeData
+    job_description: str

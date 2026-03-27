@@ -107,3 +107,58 @@ Rules:
 
     _log_usage(response.usage)
     return json.loads(response.choices[0].message.content)
+
+
+def analyze_ats_match(resume_data: ResumeData, job_description: str) -> dict:
+    skills_text = ", ".join(resume_data.skills)
+
+    experience_text = ""
+    for exp in resume_data.work_experience:
+        experience_text += f"{exp.role} at {exp.company}: {exp.responsibilities}\n"
+
+    projects_text = ""
+    for proj in resume_data.projects:
+        projects_text += f"{proj.name} ({proj.technologies}): {proj.description}\n"
+
+    prompt = f"""
+You are an expert ATS (Applicant Tracking System) analyst. Compare the resume below against the job description and return a JSON analysis.
+
+--- RESUME ---
+Name: {resume_data.personal_info.full_name}
+Target Role: {resume_data.job_title or "Not specified"}
+Skills: {skills_text}
+Experience:
+{experience_text}
+Projects:
+{projects_text}
+Summary: {resume_data.personal_info.summary}
+
+--- JOB DESCRIPTION ---
+{job_description}
+
+Return a JSON object with these exact keys:
+{{
+  "score": <integer 0-100 representing overall ATS match percentage>,
+  "matched_keywords": ["keyword1", "keyword2", ...],
+  "missing_keywords": ["keyword1", "keyword2", ...],
+  "suggestions": ["actionable suggestion 1", "actionable suggestion 2", ...],
+  "summary": "2-3 sentence overall assessment of the match"
+}}
+
+Rules:
+- score should reflect how well the resume matches the job description keywords, required skills, and experience
+- matched_keywords: important keywords/skills from the job description that ARE present in the resume (max 15)
+- missing_keywords: important keywords/skills from the job description that are NOT in the resume (max 15)
+- suggestions: 3-5 specific, actionable improvements to better match this job (e.g. "Add Docker to your skills section")
+- Return ONLY valid JSON, no markdown
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        response_format={"type": "json_object"},
+        temperature=0.3,
+    )
+
+    _log_usage(response.usage, label="ATS Match Analysis")
+    return json.loads(response.choices[0].message.content)

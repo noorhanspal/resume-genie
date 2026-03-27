@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import Response
-from models.resume import ResumeData
-from services.llm_service import enhance_resume_with_llm
+from models.resume import ResumeData, ATSRequest
+from services.llm_service import enhance_resume_with_llm, analyze_ats_match
 from services.pdf_service import generate_pdf
 
 router = APIRouter(prefix="/api/resume", tags=["resume"])
@@ -28,5 +28,14 @@ async def generate_resume_pdf(data: ResumeData):
                 "Content-Disposition": f'attachment; filename="{data.personal_info.full_name.replace(" ", "_")}_Resume.pdf"'
             }
         )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/ats-match")
+async def ats_match(request: ATSRequest):
+    try:
+        result = analyze_ats_match(request.resume_data, request.job_description)
+        return {"success": True, "data": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
