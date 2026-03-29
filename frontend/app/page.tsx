@@ -1,5 +1,7 @@
+"use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useUser, useClerk } from "@clerk/nextjs";
 
 const FEATURES = [
   {
@@ -92,6 +94,9 @@ const TEMPLATES = [
 ];
 
 export default function Home() {
+  const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Navbar */}
@@ -100,11 +105,31 @@ export default function Home() {
           <span className="text-xl font-bold">
             Resume <span className="text-blue-600">Genie</span>
           </span>
-          <Link href="/builder">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-5">
-              Build My Resume →
-            </Button>
-          </Link>
+          {!isLoaded ? null : user ? (
+            <div className="flex items-center gap-3">
+              <Link href="/dashboard">
+                <Button variant="outline" className="text-sm px-4">My Resumes</Button>
+              </Link>
+              <Link href="/builder">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-5">
+                  + New Resume
+                </Button>
+              </Link>
+              <Button
+                variant="ghost"
+                className="text-sm text-gray-500 hover:text-red-600"
+                onClick={() => signOut({ redirectUrl: "/" })}
+              >
+                Sign Out
+              </Button>
+            </div>
+          ) : (
+            <Link href="/login">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-5">
+                Login
+              </Button>
+            </Link>
+          )}
         </div>
       </nav>
 
@@ -125,16 +150,21 @@ export default function Home() {
             and your choice of design template.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/builder">
-              <Button
-                size="lg"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-base w-full sm:w-auto"
-              >
-                Build My Resume — It's Free →
-              </Button>
-            </Link>
+            {!isLoaded ? null : user ? (
+              <Link href="/builder">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-base w-full sm:w-auto">
+                  Build My Resume →
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-base w-full sm:w-auto">
+                  Build My Resume — It's Free →
+                </Button>
+              </Link>
+            )}
           </div>
-          <p className="text-xs text-gray-400 mt-4">No account required. No watermarks. No credit card.</p>
+          <p className="text-xs text-gray-400 mt-4">Free account required. No watermarks. No credit card.</p>
         </div>
       </section>
 
@@ -234,13 +264,10 @@ export default function Home() {
             Ready to build your resume?
           </h2>
           <p className="text-blue-100 mb-8 text-base">
-            No sign-up needed. Start filling your details and get a professional resume in minutes.
+            Create a free account and build your AI-powered resume in minutes.
           </p>
-          <Link href="/builder">
-            <Button
-              size="lg"
-              className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-6 text-base font-semibold"
-            >
+          <Link href={user ? "/builder" : "/login"}>
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-6 text-base font-semibold">
               Get Started for Free →
             </Button>
           </Link>

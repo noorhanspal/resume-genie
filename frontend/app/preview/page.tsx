@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { useUser } from "@clerk/nextjs";
 import { ResumeData, TemplateId } from "@/lib/types";
 import ClassicTemplate from "@/components/templates/ClassicTemplate";
 import ModernTemplate from "@/components/templates/ModernTemplate";
@@ -73,10 +74,13 @@ function ScoreRing({ score }: { score: number }) {
 
 export default function PreviewPage() {
   const router = useRouter();
+  const { user } = useUser();
   const [resumeData, setResumeData] = useState<ResumeData | null>(null);
   const [enhancedData, setEnhancedData] = useState<EnhancedData | null>(null);
   const [downloading, setDownloading] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>("classic");
+  const [saving, setSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<"" | "saved" | "error">("");
 
   // ATS state
   const [jobDescription, setJobDescription] = useState("");
@@ -121,6 +125,29 @@ export default function PreviewPage() {
     } finally {
       setDownloading(false);
     }
+  };
+
+  const handleSave = () => {
+    if (!resumeData || !enhancedData || !user) return;
+    setSaving(true);
+    setSaveStatus("");
+    try {
+      const key = `resumes_${user.id}`;
+      const existing = JSON.parse(localStorage.getItem(key) || "[]");
+      const newResume = {
+        id: Date.now().toString(),
+        title: resumeData.personal_info?.full_name || "Untitled",
+        template: selectedTemplate,
+        created_at: new Date().toISOString(),
+        resume_data: { ...resumeData, template: selectedTemplate },
+        enhanced_data: enhancedData,
+      };
+      localStorage.setItem(key, JSON.stringify([newResume, ...existing]));
+      setSaveStatus("saved");
+    } catch {
+      setSaveStatus("error");
+    }
+    setSaving(false);
   };
 
   const handleATSCheck = async () => {
@@ -174,6 +201,14 @@ export default function PreviewPage() {
             className="border-purple-300 text-purple-700 hover:bg-purple-50"
           >
             {showAts ? "Hide ATS Check" : "🎯 ATS Match Check"}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleSave}
+            disabled={saving}
+            className="border-blue-300 text-blue-700 hover:bg-blue-50"
+          >
+            {saving ? "Saving..." : saveStatus === "saved" ? "✓ Saved" : "💾 Save Resume"}
           </Button>
           <Button
             className="bg-green-600 hover:bg-green-700 text-white px-6"
