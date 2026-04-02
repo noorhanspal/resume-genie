@@ -53,19 +53,21 @@ function ScoreRing({ score }: { score: number }) {
 
   return (
     <div className="flex flex-col items-center">
-      <svg width="100" height="100" className="-rotate-90">
-        <circle cx="50" cy="50" r={radius} fill="none" stroke="#e5e7eb" strokeWidth="8" />
-        <circle
-          cx="50" cy="50" r={radius} fill="none"
-          stroke={color} strokeWidth="8"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          style={{ transition: "stroke-dashoffset 0.8s ease" }}
-        />
-      </svg>
-      <div className="absolute">
-        <p className="text-2xl font-bold" style={{ color }}>{score}</p>
+      <div className="relative w-[100px] h-[100px]">
+        <svg width="100" height="100" className="-rotate-90">
+          <circle cx="50" cy="50" r={radius} fill="none" stroke="#e5e7eb" strokeWidth="8" />
+          <circle
+            cx="50" cy="50" r={radius} fill="none"
+            stroke={color} strokeWidth="8"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            style={{ transition: "stroke-dashoffset 0.8s ease" }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <p className="text-2xl font-bold" style={{ color }}>{score}</p>
+        </div>
       </div>
       <p className="text-xs text-gray-500 mt-1">ATS Score</p>
     </div>
