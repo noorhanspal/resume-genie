@@ -83,6 +83,7 @@ export default function PreviewPage() {
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>("classic");
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"" | "saved" | "error">("");
+  const [isEditing, setIsEditing] = useState(false);
 
   // ATS state
   const [jobDescription, setJobDescription] = useState("");
@@ -197,6 +198,13 @@ export default function PreviewPage() {
           ← Back to Edit
         </Button>
         <div className="flex gap-3">
+          <Button
+            variant="outline"
+            onClick={() => setIsEditing(!isEditing)}
+            className={`border-blue-300 ${isEditing ? 'bg-blue-100 text-blue-800' : 'text-blue-700 hover:bg-blue-50'}`}
+          >
+            {isEditing ? "✏️ Done Editing" : "✏️ Manual Edit"}
+          </Button>
           <Button
             variant="outline"
             onClick={() => setShowAts((v) => !v)}
@@ -341,10 +349,34 @@ export default function PreviewPage() {
       </div>
 
       {/* Resume Preview */}
-      <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-lg p-10 overflow-hidden">
-        {selectedTemplate === "classic" && <ClassicTemplate resumeData={previewData} enhancedData={enhancedData} />}
-        {selectedTemplate === "modern" && <ModernTemplate resumeData={previewData} enhancedData={enhancedData} />}
-        {selectedTemplate === "minimal" && <MinimalTemplate resumeData={previewData} enhancedData={enhancedData} />}
+      <div className={`max-w-4xl mx-auto bg-white shadow-xl rounded-lg p-10 overflow-hidden ${isEditing ? 'ring-2 ring-blue-400' : ''}`}>
+        {selectedTemplate === "classic" && (
+          <ClassicTemplate 
+            resumeData={previewData} 
+            enhancedData={enhancedData} 
+            isEditing={isEditing} 
+            onUpdateResume={setResumeData} 
+            onUpdateEnhanced={setEnhancedData} 
+          />
+        )}
+        {selectedTemplate === "modern" && (
+          <ModernTemplate 
+            resumeData={previewData} 
+            enhancedData={enhancedData} 
+            isEditing={isEditing} 
+            onUpdateResume={setResumeData} 
+            onUpdateEnhanced={setEnhancedData} 
+          />
+        )}
+        {selectedTemplate === "minimal" && (
+          <MinimalTemplate 
+            resumeData={previewData} 
+            enhancedData={enhancedData} 
+            isEditing={isEditing} 
+            onUpdateResume={setResumeData} 
+            onUpdateEnhanced={setEnhancedData} 
+          />
+        )}
       </div>
     </div>
   );
