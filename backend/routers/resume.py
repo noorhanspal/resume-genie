@@ -1,8 +1,12 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, UploadFile, File
 from fastapi.responses import Response
 from models.resume import ResumeData, ATSRequest
-from services.llm_service import enhance_resume_with_llm, analyze_ats_match
+from services.llm_service import enhance_resume_with_llm, analyze_ats_match, analyze_uploaded_resume
 from services.pdf_service import generate_pdf
+import io
+import pypdf
+import docx
+
 
 router = APIRouter(prefix="/api/resume", tags=["resume"])
 
@@ -36,6 +40,32 @@ async def generate_resume_pdf(data: ResumeData):
 async def ats_match(request: ATSRequest):
     try:
         result = analyze_ats_match(request.resume_data, request.job_description)
+        return {"success": True, "data": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/smart-analyze")
+async def smart_analyze(file: UploadFile = File(...)):
+    try:
+        content = await file.read()
+        text = ""
+        filename = file.filename.lower()
+        
+        if filename.endswith(".pdf"):
+            pdf_reader = pypdf.PdfReader(io.BytesIO(content))
+            for page in pdf_reader.pages:
+                text += page.extract_text() + "\n"
+        elif filename.endswith(".docx"):
+            doc = docx.Document(io.BytesIO(content))
+            for para in doc.paragraphs:
+                text += para.text + "\n"
+        else:
+            raise HTTPException(status_code=400, detail="Only PDF and DOCX files are supported.")
+            
+        if not text.strip():
+            raise HTTPException(status_code=400, detail="Could not extract any text from the file.")
+            
+        result = analyze_uploaded_resume(text)
         return {"success": True, "data": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

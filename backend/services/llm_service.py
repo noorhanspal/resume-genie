@@ -162,3 +162,37 @@ Rules:
 
     _log_usage(response.usage, label="ATS Match Analysis")
     return json.loads(response.choices[0].message.content)
+
+
+def analyze_uploaded_resume(resume_text: str) -> dict:
+    prompt = f"""
+You are an expert career counselor and resume reviewer. Parse the provided resume text, understand the skills and work experience, detect weak points, and suggest the best job roles for the candidate. Finally, provide actionable improvement suggestions.
+
+--- RESUME TEXT ---
+{resume_text}
+
+Return a JSON object with these exact keys:
+{{
+  "best_roles": ["Role 1", "Role 2", "Role 3"],
+  "skills_extracted": ["Skill 1", "Skill 2", "Skill 3"],
+  "weak_points": ["Weak point 1", "Weak point 2"],
+  "improvement_suggestions": ["Actionable suggestion 1", "Actionable suggestion 2"]
+}}
+
+Rules:
+- best_roles: Provide 2-4 roles that are the best fit for this resume based on skills and experience.
+- skills_extracted: Extract 10-15 key skills from the text.
+- weak_points: Point out 2-3 missing elements (e.g. lack of measurable metrics, missing core skills for standard roles, gaps, unstructured formatting).
+- improvement_suggestions: Provide 3-5 specific suggestions for making this resume better (e.g. "Add projects relating to React", "Improve keywords like <keyword>").
+- Return ONLY valid JSON, no markdown.
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        response_format={"type": "json_object"},
+        temperature=0.5,
+    )
+
+    _log_usage(response.usage, label="Smart Resume Analysis")
+    return json.loads(response.choices[0].message.content)

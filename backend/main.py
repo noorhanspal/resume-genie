@@ -18,3 +18,4 @@ app.include_router(resume.router)
 @app.get("/")
 def root():
     return {"message": "Resume Genie API is running"}
+

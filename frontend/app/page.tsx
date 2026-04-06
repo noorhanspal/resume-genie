@@ -107,6 +107,9 @@ export default function Home() {
           </span>
           {!isLoaded ? null : user ? (
             <div className="flex items-center gap-3">
+              <Link href="/smart-analysis">
+                <Button variant="ghost" className="text-sm px-4 text-blue-600 font-medium">Smart Analysis</Button>
+              </Link>
               <Link href="/dashboard">
                 <Button variant="outline" className="text-sm px-4">My Resumes</Button>
               </Link>
