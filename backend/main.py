@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import resume
+from routers import resume, jobs
 
 app = FastAPI(title="Resume Genie API")
 
@@ -13,6 +13,7 @@ app.add_middleware(
 )
 
 app.include_router(resume.router)
+app.include_router(jobs.router)
 
 
 @app.get("/")

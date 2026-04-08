@@ -104,6 +104,9 @@ export default function DashboardPage() {
             Resume <span className="text-blue-600">Genie</span>
           </Link>
           <div className="flex items-center gap-4">
+            <Link href="/jobs">
+              <Button variant="ghost" className="text-sm px-4 text-orange-600 font-medium">Find Jobs ✨</Button>
+            </Link>
             <Link href="/builder">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4">
                 + New Resume

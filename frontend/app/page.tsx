@@ -110,6 +110,9 @@ export default function Home() {
               <Link href="/smart-analysis">
                 <Button variant="ghost" className="text-sm px-4 text-blue-600 font-medium">Smart Analysis</Button>
               </Link>
+              <Link href="/jobs">
+                <Button variant="ghost" className="text-sm px-4 text-orange-600 font-medium">Find Jobs ✨</Button>
+              </Link>
               <Link href="/dashboard">
                 <Button variant="outline" className="text-sm px-4">My Resumes</Button>
               </Link>
