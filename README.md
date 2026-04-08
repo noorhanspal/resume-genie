@@ -18,6 +18,7 @@ An AI-powered resume builder that generates professional, ATS-friendly resumes i
 - **3 resume templates** — Classic (blue accents), Modern (dark navy + emerald), Minimal (black & white serif)
 - **Live template switcher** — Switch between templates instantly on the preview page
 - **ATS Match Checker** — Paste any job description to get a match score, matched/missing keywords, and improvement suggestions
+- **AI Job Finder** — Input your role and skills to automatically fetch live job match recommendations with an AI-generated fit explanation
 - **Resume Dashboard** — Save resumes to your account, open, download, or delete them
 - **One-click PDF download** — Clean, properly formatted PDF with chosen template
 - **Landing page** — Hero, features, how it works, templates showcase, CTA
@@ -33,6 +34,7 @@ resume-genie/
 │   │   ├── builder/                 # Multi-step resume form
 │   │   ├── preview/                 # Resume preview + PDF + ATS checker
 │   │   ├── dashboard/               # Saved resumes dashboard
+│   │   ├── jobs/                    # AI Job Finder page
 │   │   ├── login/[[...rest]]/       # Clerk sign-in page
 │   │   └── signup/[[...rest]]/      # Clerk sign-up page
 │   ├── components/
@@ -50,9 +52,11 @@ resume-genie/
     ├── models/
     │   └── resume.py                # Pydantic request models
     ├── routers/
-    │   └── resume.py                # API endpoints
+    │   ├── resume.py                # API endpoints
+    │   └── jobs.py                  # Jobs endpoints
     └── services/
         ├── llm_service.py           # OpenAI integration + cost logging
+        ├── job_service.py           # Job matching and arbitrary API fetch
         └── pdf_service.py           # ReportLab PDF generation (3 templates)
 ```
 
@@ -120,6 +124,7 @@ OPENAI_API_KEY=your_openai_api_key_here
 | POST | `/api/resume/enhance` | Enhance resume data with AI, returns JSON |
 | POST | `/api/resume/generate-pdf` | Enhance + generate and return PDF file |
 | POST | `/api/resume/ats-match` | Analyze resume against a job description |
+| POST | `/api/jobs/match` | Matches user's role and skills to live job postings |
 
 ## Auth Flow
 
