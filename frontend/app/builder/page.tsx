@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { ResumeData, WorkExperience, Education, Project } from "@/lib/types";
 
 const STEPS = ["Personal Info", "Experience", "Education", "Skills", "Projects"];
@@ -147,20 +148,24 @@ export default function BuilderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-transparent py-10 px-4 text-foreground transition-colors duration-500">
+      <div className="max-w-2xl mx-auto glass-panel rounded-3xl p-8 relative">
+        <div className="absolute top-6 right-6">
+          <ThemeToggle />
+        </div>
+        
         {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Resume <span className="text-blue-600">Genie</span>
+        <div className="mb-8 text-center pt-2">
+          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300 inline-block">
+            Resume Genie
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-muted-foreground mt-2 font-medium">
             Step {step + 1} of {STEPS.length}: {STEPS[step]}
           </p>
         </div>
 
         {/* Progress */}
-        <Progress value={progress} className="mb-8 h-2" />
+        <Progress value={progress} className="mb-8 h-2 bg-black/5 dark:bg-white/10" />
 
         {/* Step: Personal Info */}
         {step === 0 && (

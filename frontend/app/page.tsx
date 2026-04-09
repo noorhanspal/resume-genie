@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useUser, useClerk } from "@clerk/nextjs";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const FEATURES = [
   {
@@ -98,102 +99,105 @@ export default function Home() {
   const { signOut } = useClerk();
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen bg-transparent text-foreground">
       {/* Navbar */}
-      <nav className="border-b border-gray-100 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <nav className="border-b border-white/20 dark:border-white/10 glass bg-white/40 dark:bg-black/40 sticky top-0 z-50 transition-all duration-500">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <span className="text-xl font-bold">
-            Resume <span className="text-blue-600">Genie</span>
+          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300">
+            Resume Genie
           </span>
-          {!isLoaded ? null : user ? (
-            <div className="flex items-center gap-3">
-              <Link href="/smart-analysis">
-                <Button variant="ghost" className="text-sm px-4 text-blue-600 font-medium">Smart Analysis</Button>
-              </Link>
-              <Link href="/jobs">
-                <Button variant="ghost" className="text-sm px-4 text-orange-600 font-medium">Find Jobs ✨</Button>
-              </Link>
-              <Link href="/dashboard">
-                <Button variant="outline" className="text-sm px-4">My Resumes</Button>
-              </Link>
-              <Link href="/builder">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-5">
-                  + New Resume
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            {!isLoaded ? null : user ? (
+              <>
+                <Link href="/smart-analysis">
+                  <Button variant="ghost" className="text-sm px-4 text-blue-600 font-medium">Smart Analysis</Button>
+                </Link>
+                <Link href="/jobs">
+                  <Button variant="ghost" className="text-sm px-4 text-orange-600 font-medium">Find Jobs ✨</Button>
+                </Link>
+                <Link href="/dashboard">
+                  <Button variant="outline" className="text-sm px-4">My Resumes</Button>
+                </Link>
+                <Link href="/builder">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-5">
+                    + New Resume
+                  </Button>
+                </Link>
+                <Button
+                  variant="ghost"
+                  className="text-sm text-foreground hover:text-red-500"
+                  onClick={() => signOut({ redirectUrl: "/" })}
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Link href="/login">
+                <Button className="bg-blue-600/90 hover:bg-blue-700/90 text-white text-sm px-5 border-none shadow-sm backdrop-blur-md transition-all active:scale-95">
+                  Login
                 </Button>
               </Link>
-              <Button
-                variant="ghost"
-                className="text-sm text-gray-500 hover:text-red-600"
-                onClick={() => signOut({ redirectUrl: "/" })}
-              >
-                Sign Out
-              </Button>
-            </div>
-          ) : (
-            <Link href="/login">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-5">
-                Login
-              </Button>
-            </Link>
-          )}
+            )}
+          </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-24 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-6">
+      <section className="py-24 px-6 relative flex flex-col justify-center min-h-[70vh]">
+        <div className="max-w-4xl mx-auto text-center relative z-10 glass-panel rounded-3xl p-10 md:p-14">
+          <span className="inline-block glass bg-blue-100/50 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-8 shadow-sm">
             AI-Powered Resume Builder
           </span>
-          <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 leading-tight mb-6">
+          <h1 className="text-5xl sm:text-7xl font-extrabold text-foreground leading-tight mb-6 tracking-tight">
             A professional resume
             <br />
-            <span className="text-blue-600">in under 2 minutes.</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300">in under 2 minutes.</span>
           </h1>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
             Fill in your details in plain language. Our AI turns them into a polished,
             ATS-optimized resume with strong bullet points, a professional summary,
             and your choice of design template.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             {!isLoaded ? null : user ? (
               <Link href="/builder">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-base w-full sm:w-auto">
+                <Button size="lg" className="bg-blue-600/90 dark:bg-blue-600/80 hover:bg-blue-700/90 dark:hover:bg-blue-500/80 text-white px-10 py-7 text-lg rounded-xl border-none shadow-[0_0_20px_rgba(37,99,235,0.3)] backdrop-blur-md transition-all active:scale-95">
                   Build My Resume →
                 </Button>
               </Link>
             ) : (
               <Link href="/login">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-base w-full sm:w-auto">
+                <Button size="lg" className="bg-blue-600/90 dark:bg-blue-600/80 hover:bg-blue-700/90 dark:hover:bg-blue-500/80 text-white px-10 py-7 text-lg rounded-xl border-none shadow-[0_0_20px_rgba(37,99,235,0.3)] backdrop-blur-md transition-all active:scale-95">
                   Build My Resume — It's Free →
                 </Button>
               </Link>
             )}
           </div>
-          <p className="text-xs text-gray-400 mt-4">Free account required. No watermarks. No credit card.</p>
+          <p className="text-xs text-muted-foreground mt-6 font-medium">Free account required. No watermarks. No credit card.</p>
         </div>
       </section>
 
       {/* Features */}
-      <section className="py-24 px-6 bg-white">
+      <section className="py-24 px-6 relative">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-gray-900">
+          <div className="text-center mb-16 relative">
+            <h2 className="text-4xl font-bold text-foreground">
               Everything you need to land the interview
             </h2>
-            <p className="text-gray-500 mt-3 max-w-xl mx-auto">
+            <p className="text-muted-foreground mt-4 max-w-xl mx-auto text-lg">
               Not just a resume builder — a complete tool to help you apply smarter.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {FEATURES.map((f) => (
               <div
                 key={f.title}
-                className="border border-gray-100 rounded-2xl p-6 hover:shadow-md transition-shadow"
+                className="glass-card p-8 group border border-white/20 dark:border-white/10"
               >
-                <div className="text-3xl mb-4">{f.icon}</div>
-                <h3 className="font-semibold text-gray-900 mb-2">{f.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{f.description}</p>
+                <div className="text-4xl mb-5 transform group-hover:scale-110 transition-transform duration-300">{f.icon}</div>
+                <h3 className="font-bold text-xl text-foreground mb-3">{f.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{f.description}</p>
               </div>
             ))}
           </div>
@@ -201,21 +205,21 @@ export default function Home() {
       </section>
 
       {/* How it Works */}
-      <section className="py-24 px-6 bg-gray-50">
-        <div className="max-w-5xl mx-auto">
+      <section className="py-24 px-6 relative">
+        <div className="max-w-5xl mx-auto glass-panel rounded-3xl p-10 md:p-14">
           <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-gray-900">How it works</h2>
-            <p className="text-gray-500 mt-3">Four simple steps from blank form to downloaded PDF.</p>
+            <h2 className="text-3xl font-bold text-foreground">How it works</h2>
+            <p className="text-muted-foreground mt-3">Four simple steps from blank form to downloaded PDF.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {STEPS.map((step) => (
-              <div key={step.number} className="flex gap-5">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
+              <div key={step.number} className="flex gap-5 glass-card p-6 border border-white/20 dark:border-white/10">
+                <div className="flex-shrink-0 w-12 h-12 rounded-full glass bg-blue-600 text-white flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(37,99,235,0.4)]">
                   {step.number}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-1">{step.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{step.description}</p>
+                  <h3 className="font-semibold text-foreground mb-1">{step.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
                 </div>
               </div>
             ))}
@@ -224,11 +228,11 @@ export default function Home() {
       </section>
 
       {/* Templates */}
-      <section className="py-24 px-6 bg-white">
+      <section className="py-24 px-6 relative">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-gray-900">3 templates to choose from</h2>
-            <p className="text-gray-500 mt-3">
+            <h2 className="text-3xl font-bold text-foreground">3 templates to choose from</h2>
+            <p className="text-muted-foreground mt-3">
               Switch between designs instantly on the preview page — no need to regenerate.
             </p>
           </div>
@@ -236,24 +240,24 @@ export default function Home() {
             {TEMPLATES.map((t) => (
               <div
                 key={t.name}
-                className={`border-2 ${t.border} rounded-2xl overflow-hidden hover:shadow-lg transition-shadow`}
+                className={`glass-card border border-white/20 dark:border-white/10 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow`}
               >
                 {/* Template mock preview */}
-                <div className={`${t.accent} h-16 w-full`} />
-                <div className="p-5 space-y-2">
-                  <div className="h-2 bg-gray-200 rounded w-3/4" />
-                  <div className="h-2 bg-gray-100 rounded w-1/2" />
-                  <div className="h-px bg-gray-200 my-3" />
-                  <div className="h-2 bg-gray-200 rounded w-full" />
-                  <div className="h-2 bg-gray-100 rounded w-5/6" />
-                  <div className="h-2 bg-gray-100 rounded w-4/6" />
+                <div className={`${t.accent} h-16 w-full opacity-80`} />
+                <div className="p-5 space-y-2 dark:opacity-70">
+                  <div className="h-2 bg-gray-300 dark:bg-gray-600 rounded w-3/4" />
+                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-1/2" />
+                  <div className="h-px bg-gray-300 dark:bg-gray-600 my-3 opacity-50" />
+                  <div className="h-2 bg-gray-300 dark:bg-gray-600 rounded w-full" />
+                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-5/6" />
+                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-4/6" />
                 </div>
                 <div className="px-5 pb-5 flex items-center justify-between">
                   <div>
-                    <p className="font-semibold text-sm text-gray-900">{t.name}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">{t.description}</p>
+                    <p className="font-semibold text-sm text-foreground">{t.name}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{t.description}</p>
                   </div>
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${t.badge}`}>
+                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${t.badge} drop-shadow-sm`}>
                     Free
                   </span>
                 </div>
@@ -264,16 +268,17 @@ export default function Home() {
       </section>
 
       {/* CTA Banner */}
-      <section className="py-20 px-6 bg-blue-600">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
+      <section className="py-24 px-6 relative">
+        <div className="max-w-4xl mx-auto text-center glass-panel rounded-3xl p-10 md:p-14 relative overflow-hidden">
+          <div className="absolute inset-0 bg-blue-600/90 dark:bg-blue-600/80 -z-10 mix-blend-multiply dark:mix-blend-color"></div>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             Ready to build your resume?
           </h2>
           <p className="text-blue-100 mb-8 text-base">
             Create a free account and build your AI-powered resume in minutes.
           </p>
           <Link href={user ? "/builder" : "/login"}>
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-6 text-base font-semibold">
+            <Button size="lg" className="glass bg-white/20 hover:bg-white/30 text-white px-10 py-7 text-lg font-semibold border border-white/40 shadow-xl transition-all">
               Get Started for Free →
             </Button>
           </Link>
@@ -281,12 +286,12 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-100 py-8 px-6 bg-white">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+      <footer className="border-t border-white/20 dark:border-white/10 glass bg-white/40 dark:bg-black/40 py-8 px-6 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
           <span>
-            <span className="font-semibold text-gray-700">Resume Genie</span> — AI-powered resume builder
+            <span className="font-bold text-foreground">Resume Genie</span> — AI-powered resume builder
           </span>
-          <span>Built with Next.js, FastAPI, and GPT-4o-mini</span>
+          <span>Built with Next.js & Tailwind</span>
         </div>
       </footer>
     </div>

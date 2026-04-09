@@ -11,6 +11,7 @@ import ClassicTemplate from "@/components/templates/ClassicTemplate";
 import ModernTemplate from "@/components/templates/ModernTemplate";
 import MinimalTemplate from "@/components/templates/MinimalTemplate";
 import ProfessionalTemplate from "@/components/templates/ProfessionalTemplate";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface EnhancedExperience {
   company: string;
@@ -193,12 +194,15 @@ export default function PreviewPage() {
     : "";
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
+    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-500 py-10 px-4">
       {/* Action Bar */}
-      <div className="max-w-4xl mx-auto mb-4 flex justify-between items-center">
-        <Button variant="outline" onClick={() => router.push("/builder")}>
-          ← Back to Edit
-        </Button>
+      <div className="max-w-4xl mx-auto mb-6 flex flex-col sm:flex-row gap-4 justify-between items-center glass-panel p-4 rounded-2xl">
+        <div className="flex items-center gap-3">
+          <Button variant="outline" className="glass-button border-none" onClick={() => router.push("/builder")}>
+            ← Back to Edit
+          </Button>
+          <ThemeToggle />
+        </div>
         <div className="flex gap-3">
           <Button
             variant="outline"
@@ -234,10 +238,10 @@ export default function PreviewPage() {
 
       {/* ATS Panel */}
       {showAts && (
-        <div className="max-w-4xl mx-auto mb-6 bg-white rounded-xl shadow-md border border-purple-100 overflow-hidden">
-          <div className="bg-purple-50 border-b border-purple-100 px-6 py-4">
-            <h2 className="font-bold text-gray-900">ATS Match Checker</h2>
-            <p className="text-xs text-gray-500 mt-0.5">
+        <div className="max-w-4xl mx-auto mb-6 glass-panel rounded-2xl overflow-hidden">
+          <div className="bg-purple-500/10 border-b border-purple-500/20 px-6 py-4">
+            <h2 className="font-bold text-foreground">ATS Match Checker</h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
               Paste the job description to see how well your resume matches it.
             </p>
           </div>
@@ -328,30 +332,30 @@ export default function PreviewPage() {
       )}
 
       {/* Template Selector */}
-      <div className="max-w-4xl mx-auto mb-6">
-        <p className="text-xs text-gray-500 uppercase tracking-widest mb-2 font-semibold">
+      <div className="max-w-4xl mx-auto mb-6 glass-panel p-6 rounded-2xl">
+        <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3 font-bold">
           Choose Template
         </p>
-        <div className="flex gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {TEMPLATES.map((t) => (
             <button
               key={t.id}
               onClick={() => setSelectedTemplate(t.id)}
-              className={`flex-1 border-2 rounded-lg px-4 py-3 text-left transition-all ${
+              className={`flex flex-col border border-white/20 dark:border-white/10 rounded-xl px-4 py-3 text-left transition-all ${
                 selectedTemplate === t.id
-                  ? t.color + " border-2"
-                  : "border-gray-200 bg-white text-gray-600 hover:border-gray-400"
+                  ? "ring-2 ring-blue-500 bg-blue-500/10"
+                  : "glass bg-white/40 dark:bg-black/40 hover:bg-white/60 dark:hover:bg-white/10"
               }`}
             >
-              <p className="font-semibold text-sm">{t.label}</p>
-              <p className="text-xs opacity-70 mt-0.5">{t.description}</p>
+              <p className={`font-semibold text-sm ${selectedTemplate === t.id ? "text-blue-700 dark:text-blue-300" : "text-foreground"}`}>{t.label}</p>
+              <p className="text-xs opacity-70 mt-0.5 text-muted-foreground truncate w-full">{t.description}</p>
             </button>
           ))}
         </div>
       </div>
 
       {/* Resume Preview */}
-      <div className={`max-w-4xl mx-auto bg-white shadow-xl rounded-lg p-10 overflow-hidden ${isEditing ? 'ring-2 ring-blue-400' : ''}`}>
+      <div className={`max-w-4xl mx-auto bg-white shadow-2xl rounded-xl p-10 overflow-hidden relative z-10 print:shadow-none print:bg-transparent ${isEditing ? 'ring-4 ring-blue-400' : ''}`}>
         {selectedTemplate === "classic" && (
           <ClassicTemplate 
             resumeData={previewData} 

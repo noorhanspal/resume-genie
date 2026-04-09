@@ -97,10 +97,10 @@ export default function DashboardPage() {
   const initials = displayName.slice(0, 2).toUpperCase();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950">
+      <nav className="bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-gray-900">
+          <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white">
             Resume <span className="text-blue-600">Genie</span>
           </Link>
           <div className="flex items-center gap-4">
@@ -116,7 +116,7 @@ export default function DashboardPage() {
               <div className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold">
                 {initials}
               </div>
-              <span className="text-sm text-gray-600">{displayName}</span>
+              <span className="text-sm text-gray-600 dark:text-gray-300">{displayName}</span>
               <button
                 onClick={() => signOut({ redirectUrl: "/" })}
                 className="text-sm text-gray-400 hover:text-red-600 transition-colors ml-1"
@@ -130,16 +130,16 @@ export default function DashboardPage() {
 
       <main className="max-w-5xl mx-auto px-6 py-10">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">My Resumes</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Resumes</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             {resumes.length === 0 ? "No resumes saved yet." : `${resumes.length} resume${resumes.length > 1 ? "s" : ""} saved`}
           </p>
         </div>
 
         {resumes.length === 0 ? (
-          <div className="text-center py-24 border-2 border-dashed border-gray-200 rounded-2xl">
+          <div className="text-center py-24 border-2 border-dashed border-gray-200 dark:border-slate-800 rounded-2xl">
             <div className="text-5xl mb-4">📄</div>
-            <p className="font-semibold text-gray-700 mb-2">No resumes yet</p>
+            <p className="font-semibold text-gray-700 dark:text-gray-300 mb-2">No resumes yet</p>
             <p className="text-sm text-gray-400 mb-6">
               Build your first resume and save it from the preview page.
             </p>
@@ -156,9 +156,9 @@ export default function DashboardPage() {
               const name = rd.personal_info?.full_name ?? "Untitled";
               const jobTitle = rd.job_title ?? "";
               return (
-                <div key={resume.id} className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div key={resume.id} className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm">
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">
                       {name.slice(0, 2).toUpperCase()}
                     </div>
                     <span className={`text-xs px-2 py-0.5 rounded-full capitalize font-medium ${TEMPLATE_COLORS[resume.template] ?? TEMPLATE_COLORS.classic}`}>
@@ -166,11 +166,11 @@ export default function DashboardPage() {
                     </span>
                   </div>
                   <div className="mb-4">
-                    <p className="font-semibold text-gray-900 text-sm">{name}</p>
-                    {jobTitle && <p className="text-xs text-gray-500 mt-0.5">{jobTitle}</p>}
-                    <p className="text-xs text-gray-400 mt-2">Saved {timeAgo(resume.created_at)}</p>
+                    <p className="font-semibold text-gray-900 dark:text-white text-sm">{name}</p>
+                    {jobTitle && <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{jobTitle}</p>}
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Saved {timeAgo(resume.created_at)}</p>
                   </div>
-                  <div className="flex gap-2 pt-3 border-t border-gray-100">
+                  <div className="flex gap-2 pt-3 border-t border-gray-100 dark:border-slate-800">
                     <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-xs" onClick={() => handleOpen(resume)}>
                       Open
                     </Button>
@@ -179,7 +179,7 @@ export default function DashboardPage() {
                     </Button>
                     <Button
                       size="sm" variant="ghost"
-                      className="text-red-500 hover:text-red-700 hover:bg-red-50 text-xs px-2"
+                      className="text-red-500 hover:text-red-700 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs px-2"
                       onClick={() => handleDelete(resume.id)}
                       disabled={deletingId === resume.id}
                     >
