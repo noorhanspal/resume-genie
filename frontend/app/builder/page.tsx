@@ -148,106 +148,118 @@ export default function BuilderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent py-10 px-4 text-foreground transition-colors duration-500">
-      <div className="max-w-2xl mx-auto glass-panel rounded-3xl p-8 relative">
+    <div className="min-h-screen bg-transparent py-12 px-4 text-foreground transition-colors duration-500 antialiased">
+      <div className="max-w-3xl mx-auto glass-card p-10 relative overflow-hidden bg-white/60 dark:bg-slate-900/60 animate-pop-in">
         <div className="absolute top-6 right-6">
           <ThemeToggle />
         </div>
         
         {/* Header */}
-        <div className="mb-8 text-center pt-2">
-          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300 inline-block">
+        <div className="mb-10 text-center pt-2">
+          <h1 className="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 dark:from-blue-400 dark:via-indigo-300 dark:to-purple-400 tracking-tighter inline-block mb-3">
             Resume Genie
           </h1>
-          <p className="text-muted-foreground mt-2 font-medium">
-            Step {step + 1} of {STEPS.length}: {STEPS[step]}
-          </p>
+          <div className="flex items-center justify-center gap-4">
+            <div className="h-0.5 w-12 bg-blue-500/20 dark:bg-blue-400/10 rounded-full" />
+            <p className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-[10px]">
+              Step {step + 1} / {STEPS.length} — {STEPS[step]}
+            </p>
+            <div className="h-0.5 w-12 bg-blue-500/20 dark:bg-blue-400/10 rounded-full" />
+          </div>
         </div>
 
         {/* Progress */}
-        <Progress value={progress} className="mb-8 h-2 bg-black/5 dark:bg-white/10" />
+        <div className="mb-12 relative h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
+           <div 
+             className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-500 dark:to-indigo-400 transition-all duration-700 ease-out"
+             style={{ width: `${progress}%` }}
+           />
+        </div>
 
         {/* Step: Personal Info */}
         {step === 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Personal Information</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <Label>Full Name *</Label>
-                  <Input
-                    value={data.personal_info.full_name}
-                    onChange={(e) => updatePersonal("full_name", e.target.value)}
-                    placeholder="Ali Ahmed"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Label>Target Job Title</Label>
-                  <Input
-                    value={data.job_title}
-                    onChange={(e) => setData((prev) => ({ ...prev, job_title: e.target.value }))}
-                    placeholder="Software Engineer"
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <Label>Email *</Label>
-                  <Input
-                    type="email"
-                    value={data.personal_info.email}
-                    onChange={(e) => updatePersonal("email", e.target.value)}
-                    placeholder="ali@example.com"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Label>Phone *</Label>
-                  <Input
-                    value={data.personal_info.phone}
-                    onChange={(e) => updatePersonal("phone", e.target.value)}
-                    placeholder="+92 300 1234567"
-                  />
-                </div>
-              </div>
-              <div className="space-y-1">
-                <Label>Location *</Label>
+          <div className="space-y-6 animate-pop-in">
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Full Name *</Label>
                 <Input
-                  value={data.personal_info.location}
-                  onChange={(e) => updatePersonal("location", e.target.value)}
-                  placeholder="Lahore, Pakistan"
+                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  value={data.personal_info.full_name}
+                  onChange={(e) => updatePersonal("full_name", e.target.value)}
+                  placeholder="Ali Ahmed"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <Label>LinkedIn (optional)</Label>
-                  <Input
-                    value={data.personal_info.linkedin}
-                    onChange={(e) => updatePersonal("linkedin", e.target.value)}
-                    placeholder="linkedin.com/in/aliahmed"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Label>Website/Portfolio (optional)</Label>
-                  <Input
-                    value={data.personal_info.website}
-                    onChange={(e) => updatePersonal("website", e.target.value)}
-                    placeholder="aliahmed.dev"
-                  />
-                </div>
-              </div>
-              <div className="space-y-1">
-                <Label>Brief Summary (optional — AI will enhance it)</Label>
-                <Textarea
-                  value={data.personal_info.summary}
-                  onChange={(e) => updatePersonal("summary", e.target.value)}
-                  placeholder="3+ years of experience in web development..."
-                  rows={3}
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Target Job Title</Label>
+                <Input
+                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  value={data.job_title}
+                  onChange={(e) => setData((prev) => ({ ...prev, job_title: e.target.value }))}
+                  placeholder="Software Engineer"
                 />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Email *</Label>
+                <Input
+                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  type="email"
+                  value={data.personal_info.email}
+                  onChange={(e) => updatePersonal("email", e.target.value)}
+                  placeholder="ali@example.com"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Phone *</Label>
+                <Input
+                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  value={data.personal_info.phone}
+                  onChange={(e) => updatePersonal("phone", e.target.value)}
+                  placeholder="+92 300 1234567"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Location *</Label>
+              <Input
+                className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                value={data.personal_info.location}
+                onChange={(e) => updatePersonal("location", e.target.value)}
+                placeholder="Lahore, Pakistan"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">LinkedIn (optional)</Label>
+                <Input
+                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  value={data.personal_info.linkedin}
+                  onChange={(e) => updatePersonal("linkedin", e.target.value)}
+                  placeholder="linkedin.com/in/aliahmed"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Website/Portfolio</Label>
+                <Input
+                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  value={data.personal_info.website}
+                  onChange={(e) => updatePersonal("website", e.target.value)}
+                  placeholder="aliahmed.dev"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Brief Summary</Label>
+              <Textarea
+                className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 p-4 rounded-2xl font-medium"
+                value={data.personal_info.summary}
+                onChange={(e) => updatePersonal("summary", e.target.value)}
+                placeholder="3+ years of experience in web development..."
+                rows={4}
+              />
+            </div>
+          </div>
         )}
 
         {/* Step: Work Experience */}
@@ -488,29 +500,35 @@ export default function BuilderPage() {
         )}
 
         {/* Navigation */}
-        <div className="flex justify-between mt-8">
+        <div className="flex justify-between mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
           <Button
-            variant="outline"
+            variant="ghost"
+            className="rounded-full px-8 h-12 font-black text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 transition-all hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95"
             onClick={() => setStep((s) => s - 1)}
             disabled={step === 0}
           >
-            ← Previous
+            ← Back
           </Button>
 
           {step < STEPS.length - 1 ? (
             <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="glass-button !bg-blue-600 dark:!bg-blue-600 text-white rounded-full px-10 h-12 font-black shadow-xl shadow-blue-500/40 border-none"
               onClick={() => setStep((s) => s + 1)}
             >
-              Next →
+              Continue →
             </Button>
           ) : (
             <Button
-              className="bg-green-600 hover:bg-green-700 text-white px-8"
+              className="glass-button bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-full px-12 h-12 font-black shadow-xl shadow-emerald-500/40 border-none"
               onClick={handleGenerate}
               disabled={loading}
             >
-              {loading ? "Generating your resume..." : "✨ Generate Resume"}
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white/50 border-t-white rounded-full animate-spin" />
+                  Generating...
+                </span>
+              ) : "✨ Generate Resume"}
             </Button>
           )}
         </div>

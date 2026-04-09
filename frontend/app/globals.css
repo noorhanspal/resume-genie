@@ -121,28 +121,89 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground transition-colors duration-500 min-h-screen;
-    background: linear-gradient(135deg, #f6f8fd 0%, #f1f6f9 100%);
+    @apply bg-background text-foreground transition-colors duration-500 min-h-screen antialiased;
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(220,100%,92%,1) 0, transparent 50%), 
+      radial-gradient(at 50% 0%, hsla(260,100%,88%,1) 0, transparent 50%), 
+      radial-gradient(at 100% 0%, hsla(220,100%,92%,1) 0, transparent 50%);
     background-attachment: fixed;
   }
 }
 
 .dark body {
-  background: linear-gradient(135deg, #09090b 0%, #111827 50%, #171717 100%);
-  background-attachment: fixed;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(240,40%,12%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(260,50%,10%,1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(240,40%,12%,1) 0, transparent 50%);
+  background-color: #03081a;
 }
 
 @layer utilities {
   .glass {
-    @apply backdrop-blur-xl border border-white/40 dark:border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)];
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    @apply border border-white/40 dark:border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.08)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)];
+    background: rgba(255, 255, 255, 0.45);
   }
+  
+  .dark .glass {
+    background: rgba(15, 23, 42, 0.45);
+  }
+  
   .glass-card {
-    @apply bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/40 dark:border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] rounded-2xl transition-all duration-300 hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] dark:hover:shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] hover:-translate-y-1;
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    @apply border border-white/60 dark:border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-3xl transition-all duration-500 hover:shadow-[0_32px_96px_rgba(31,38,135,0.2)] dark:hover:shadow-[0_32px_96px_rgba(0,0,0,0.7)] hover:-translate-y-2;
+    background: rgba(255, 255, 255, 0.65);
   }
-  .glass-panel {
-    @apply bg-white/60 dark:bg-gray-900/60 backdrop-blur-2xl border border-white/50 dark:border-gray-700/50 shadow-xl;
+
+  .dark .glass-card {
+    background: rgba(15, 23, 42, 0.7);
   }
+
   .glass-button {
-    @apply relative overflow-hidden backdrop-blur-md border border-white/50 dark:border-white/20 shadow-sm transition-all duration-300 active:scale-95;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    @apply border border-white/60 dark:border-white/20 transition-all duration-300 active:scale-95 shadow-xl shadow-black/5 font-black;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.3);
+    color: inherit;
   }
+
+  .dark .glass-button {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-700 to-gray-500 dark:from-white dark:via-gray-200 dark:to-gray-400;
+  }
+
+  .animate-pop-in {
+    animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
 }

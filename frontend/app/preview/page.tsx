@@ -194,44 +194,44 @@ export default function PreviewPage() {
     : "";
 
   return (
-    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-500 py-10 px-4">
+    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-500 py-10 px-4 antialiased">
       {/* Action Bar */}
-      <div className="max-w-4xl mx-auto mb-6 flex flex-col sm:flex-row gap-4 justify-between items-center glass-panel p-4 rounded-2xl">
+      <div className="max-w-4xl mx-auto mb-8 flex flex-col sm:flex-row gap-6 justify-between items-center glass-card p-6 rounded-3xl animate-pop-in bg-white/70 dark:bg-slate-900/80 transition-all duration-500">
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="glass-button border-none" onClick={() => router.push("/builder")}>
-            ← Back to Edit
+          <Button variant="ghost" className="glass-button rounded-full px-6 font-black text-slate-700 dark:text-slate-100" onClick={() => router.push("/builder")}>
+            ← Edit
           </Button>
           <ThemeToggle />
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap justify-center gap-2">
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={() => setIsEditing(!isEditing)}
-            className={`border-blue-300 ${isEditing ? 'bg-blue-100 text-blue-800' : 'text-blue-700 hover:bg-blue-50'}`}
+            className={`glass-button rounded-full px-5 font-black transition-all ${isEditing ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' : 'text-blue-700 dark:text-blue-400'}`}
           >
-            {isEditing ? "✏️ Done Editing" : "✏️ Manual Edit"}
+            {isEditing ? "✏️ Submit Edits" : "✏️ Manual Edit"}
           </Button>
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={() => setShowAts((v) => !v)}
-            className="border-purple-300 text-purple-700 hover:bg-purple-50"
+            className={`glass-button rounded-full px-5 font-black transition-all ${showAts ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20' : 'text-purple-700 dark:text-purple-400'}`}
           >
-            {showAts ? "Hide ATS Check" : "🎯 ATS Match Check"}
+            {showAts ? "Hide Check" : "🎯 ATS Match"}
           </Button>
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={handleSave}
             disabled={saving}
-            className="border-blue-300 text-blue-700 hover:bg-blue-50"
+            className="glass-button rounded-full px-5 font-black text-indigo-700 dark:text-indigo-400"
           >
-            {saving ? "Saving..." : saveStatus === "saved" ? "✓ Saved" : "💾 Save Resume"}
+            {saving ? "Saving..." : saveStatus === "saved" ? "✓ Saved" : "💾 Save"}
           </Button>
           <Button
-            className="bg-green-600 hover:bg-green-700 text-white px-6"
+            className="glass-button bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 rounded-full font-black shadow-xl shadow-emerald-500/30"
             onClick={handleDownload}
             disabled={downloading}
           >
-            {downloading ? "Generating PDF..." : "📥 Download PDF"}
+            {downloading ? "Generating..." : "📥 Download PDF"}
           </Button>
         </div>
       </div>
@@ -332,66 +332,70 @@ export default function PreviewPage() {
       )}
 
       {/* Template Selector */}
-      <div className="max-w-4xl mx-auto mb-6 glass-panel p-6 rounded-2xl">
-        <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3 font-bold">
-          Choose Template
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="max-w-4xl mx-auto mb-10 glass-card p-8 rounded-3xl bg-white/40 dark:bg-slate-950/40 animate-pop-in">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-1.5 h-6 bg-blue-500 rounded-full" />
+          <h2 className="text-xl font-black tracking-tight text-slate-800 dark:text-slate-100 lowercase">Choose Your template</h2>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {TEMPLATES.map((t) => (
             <button
               key={t.id}
               onClick={() => setSelectedTemplate(t.id)}
-              className={`flex flex-col border border-white/20 dark:border-white/10 rounded-xl px-4 py-3 text-left transition-all ${
+              className={`flex flex-col border rounded-2xl px-5 py-4 text-left transition-all duration-300 group ${
                 selectedTemplate === t.id
-                  ? "ring-2 ring-blue-500 bg-blue-500/10"
-                  : "glass bg-white/40 dark:bg-black/40 hover:bg-white/60 dark:hover:bg-white/10"
+                  ? "ring-4 ring-blue-500/10 border-blue-500/50 bg-blue-500/10"
+                  : "border-white/40 dark:border-white/10 glass bg-white/40 dark:bg-black/20 hover:bg-white/60 dark:hover:bg-white/10 hover:-translate-y-1"
               }`}
             >
-              <p className={`font-semibold text-sm ${selectedTemplate === t.id ? "text-blue-700 dark:text-blue-300" : "text-foreground"}`}>{t.label}</p>
-              <p className="text-xs opacity-70 mt-0.5 text-muted-foreground truncate w-full">{t.description}</p>
+              <p className={`font-black text-sm tracking-tight ${selectedTemplate === t.id ? "text-blue-700 dark:text-blue-400" : "text-slate-700 dark:text-slate-200"}`}>{t.label}</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider opacity-60 mt-1 dark:text-slate-400 truncate w-full">{t.description}</p>
+              <div className={`h-1 w-8 rounded-full mt-4 transition-all duration-500 ${selectedTemplate === t.id ? "bg-blue-500 w-16" : "bg-slate-300 dark:bg-slate-700"}`} />
             </button>
           ))}
         </div>
       </div>
 
       {/* Resume Preview */}
-      <div className={`max-w-4xl mx-auto bg-white shadow-2xl rounded-xl p-10 overflow-hidden relative z-10 print:shadow-none print:bg-transparent ${isEditing ? 'ring-4 ring-blue-400' : ''}`}>
-        {selectedTemplate === "classic" && (
-          <ClassicTemplate 
-            resumeData={previewData} 
-            enhancedData={enhancedData} 
-            isEditing={isEditing} 
-            onUpdateResume={setResumeData} 
-            onUpdateEnhanced={setEnhancedData} 
-          />
-        )}
-        {selectedTemplate === "modern" && (
-          <ModernTemplate 
-            resumeData={previewData} 
-            enhancedData={enhancedData} 
-            isEditing={isEditing} 
-            onUpdateResume={setResumeData} 
-            onUpdateEnhanced={setEnhancedData} 
-          />
-        )}
-        {selectedTemplate === "minimal" && (
-          <MinimalTemplate 
-            resumeData={previewData} 
-            enhancedData={enhancedData} 
-            isEditing={isEditing} 
-            onUpdateResume={setResumeData} 
-            onUpdateEnhanced={setEnhancedData} 
-          />
-        )}
-        {selectedTemplate === "professional" && (
-          <ProfessionalTemplate 
-            resumeData={previewData} 
-            enhancedData={enhancedData} 
-            isEditing={isEditing} 
-            onUpdateResume={setResumeData} 
-            onUpdateEnhanced={setEnhancedData} 
-          />
-        )}
+      <div className={`max-w-4xl mx-auto bg-white shadow-[0_32px_128px_-32px_rgba(0,0,0,0.2)] dark:shadow-[0_32px_128px_-32px_rgba(0,0,0,0.6)] rounded-3xl p-10 overflow-hidden relative z-10 transition-all duration-700 animate-slide-up print:shadow-none print:bg-transparent ${isEditing ? 'ring-[12px] ring-blue-500/10 border-2 border-blue-500' : 'border border-white/40 dark:border-white/10'}`}>
+        <div key={selectedTemplate} className="animate-pop-in">
+          {selectedTemplate === "classic" && (
+            <ClassicTemplate 
+              resumeData={previewData} 
+              enhancedData={enhancedData} 
+              isEditing={isEditing} 
+              onUpdateResume={setResumeData} 
+              onUpdateEnhanced={setEnhancedData} 
+            />
+          )}
+          {selectedTemplate === "modern" && (
+            <ModernTemplate 
+              resumeData={previewData} 
+              enhancedData={enhancedData} 
+              isEditing={isEditing} 
+              onUpdateResume={setResumeData} 
+              onUpdateEnhanced={setEnhancedData} 
+            />
+          )}
+          {selectedTemplate === "minimal" && (
+            <MinimalTemplate 
+              resumeData={previewData} 
+              enhancedData={enhancedData} 
+              isEditing={isEditing} 
+              onUpdateResume={setResumeData} 
+              onUpdateEnhanced={setEnhancedData} 
+            />
+          )}
+          {selectedTemplate === "professional" && (
+            <ProfessionalTemplate 
+              resumeData={previewData} 
+              enhancedData={enhancedData} 
+              isEditing={isEditing} 
+              onUpdateResume={setResumeData} 
+              onUpdateEnhanced={setEnhancedData} 
+            />
+          )}
+        </div>
       </div>
     </div>
   );

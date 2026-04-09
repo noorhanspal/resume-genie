@@ -101,40 +101,30 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-transparent text-foreground">
       {/* Navbar */}
-      <nav className="border-b border-white/20 dark:border-white/10 glass bg-white/40 dark:bg-black/40 sticky top-0 z-50 transition-all duration-500">
+      <nav className="border-b border-white/20 dark:border-white/10 glass bg-white/40 dark:bg-slate-900/40 sticky top-0 z-50 transition-all duration-500 backdrop-blur-2xl">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300">
+          <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500 dark:from-blue-400 dark:via-indigo-300 dark:to-purple-300 tracking-tighter">
             Resume Genie
           </span>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <ThemeToggle />
             {!isLoaded ? null : user ? (
-              <>
+              <div className="hidden md:flex items-center gap-2">
                 <Link href="/smart-analysis">
-                  <Button variant="ghost" className="text-sm px-4 text-blue-600 font-medium">Smart Analysis</Button>
+                  <Button variant="ghost" className="glass-button px-5 text-blue-700 dark:text-blue-400 font-black hover:bg-white/40 dark:hover:bg-white/10 rounded-full transition-all">Smart Analysis</Button>
                 </Link>
                 <Link href="/jobs">
-                  <Button variant="ghost" className="text-sm px-4 text-orange-600 font-medium">Find Jobs ✨</Button>
-                </Link>
-                <Link href="/dashboard">
-                  <Button variant="outline" className="text-sm px-4">My Resumes</Button>
+                  <Button variant="ghost" className="glass-button px-5 text-orange-700 dark:text-orange-400 font-black hover:bg-white/40 dark:hover:bg-white/10 rounded-full transition-all">Find Jobs ✨</Button>
                 </Link>
                 <Link href="/builder">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-5">
+                  <Button className="glass-button !bg-blue-600 dark:!bg-blue-600 text-white text-sm px-6 rounded-full font-black shadow-blue-500/40 shadow-xl border-none">
                     + New Resume
                   </Button>
                 </Link>
-                <Button
-                  variant="ghost"
-                  className="text-sm text-foreground hover:text-red-500"
-                  onClick={() => signOut({ redirectUrl: "/" })}
-                >
-                  Sign Out
-                </Button>
-              </>
+              </div>
             ) : (
               <Link href="/login">
-                <Button className="bg-blue-600/90 hover:bg-blue-700/90 text-white text-sm px-5 border-none shadow-sm backdrop-blur-md transition-all active:scale-95">
+                <Button className="glass-button !bg-blue-600 dark:!bg-blue-600 text-white text-sm px-10 rounded-full font-black shadow-blue-500/40 shadow-xl border-none">
                   Login
                 </Button>
               </Link>
@@ -144,60 +134,63 @@ export default function Home() {
       </nav>
 
       {/* Hero */}
-      <section className="py-24 px-6 relative flex flex-col justify-center min-h-[70vh]">
-        <div className="max-w-4xl mx-auto text-center relative z-10 glass-panel rounded-3xl p-10 md:p-14">
-          <span className="inline-block glass bg-blue-100/50 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-8 shadow-sm">
-            AI-Powered Resume Builder
+      <section className="py-24 px-6 relative flex flex-col justify-center min-h-[85vh] overflow-hidden">
+        {/* Decorative Blobs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-400/20 dark:bg-blue-600/10 rounded-full blur-[128px] animate-float" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[128px] animate-float" style={{ animationDelay: '-3s' }} />
+
+        <div className="max-w-4xl mx-auto text-center relative z-10 glass-card p-10 md:p-20 animate-pop-in bg-white/60 dark:bg-slate-900/60">
+          <span className="inline-block glass bg-blue-100/50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-bold uppercase tracking-[0.2em] px-6 py-2 rounded-full mb-8 shadow-inner">
+            AI-Powered Intelligence
           </span>
-          <h1 className="text-5xl sm:text-7xl font-extrabold text-foreground leading-tight mb-6 tracking-tight">
-            A professional resume
+          <h1 className="text-6xl sm:text-8xl font-black text-slate-900 dark:text-white leading-[1.1] mb-8 tracking-tighter">
+            Build your future
             <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300">in under 2 minutes.</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 dark:from-blue-400 dark:via-indigo-300 dark:to-purple-400">in 2 minutes.</span>
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
-            Fill in your details in plain language. Our AI turns them into a polished,
-            ATS-optimized resume with strong bullet points, a professional summary,
-            and your choice of design template.
+          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed font-medium">
+            Turn your raw experience into a high-impact, ATS-optimized resume. 
+            Powered by GPT-4o-mini to land you more interviews, faster.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            {!isLoaded ? null : user ? (
-              <Link href="/builder">
-                <Button size="lg" className="bg-blue-600/90 dark:bg-blue-600/80 hover:bg-blue-700/90 dark:hover:bg-blue-500/80 text-white px-10 py-7 text-lg rounded-xl border-none shadow-[0_0_20px_rgba(37,99,235,0.3)] backdrop-blur-md transition-all active:scale-95">
-                  Build My Resume →
-                </Button>
-              </Link>
-            ) : (
-              <Link href="/login">
-                <Button size="lg" className="bg-blue-600/90 dark:bg-blue-600/80 hover:bg-blue-700/90 dark:hover:bg-blue-500/80 text-white px-10 py-7 text-lg rounded-xl border-none shadow-[0_0_20px_rgba(37,99,235,0.3)] backdrop-blur-md transition-all active:scale-95">
-                  Build My Resume — It's Free →
-                </Button>
-              </Link>
-            )}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Link href={user ? "/builder" : "/login"}>
+              <Button size="lg" className="glass-button !bg-blue-600 hover:!bg-blue-700 dark:!bg-blue-600 text-white px-12 py-8 text-xl rounded-2xl font-black shadow-2xl shadow-blue-500/50 border-none transition-all hover:scale-[1.02] active:scale-95">
+                Create My Resume — It's Free →
+              </Button>
+            </Link>
           </div>
-          <p className="text-xs text-muted-foreground mt-6 font-medium">Free account required. No watermarks. No credit card.</p>
+          <div className="flex items-center justify-center gap-8 mt-12 opacity-50 grayscale dark:invert">
+            <div className="text-xs font-bold uppercase tracking-widest text-slate-500">No Credit Card</div>
+            <div className="text-xs font-bold uppercase tracking-widest text-slate-500">ATS Optimized</div>
+            <div className="text-xs font-bold uppercase tracking-widest text-slate-500">PDF Ready</div>
+          </div>
         </div>
       </section>
 
       {/* Features */}
       <section className="py-24 px-6 relative">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 relative">
-            <h2 className="text-4xl font-bold text-foreground">
-              Everything you need to land the interview
+          <div className="text-center mb-20">
+            <h2 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tighter mb-4">
+              Designed for success.
             </h2>
-            <p className="text-muted-foreground mt-4 max-w-xl mx-auto text-lg">
-              Not just a resume builder — a complete tool to help you apply smarter.
+            <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto text-lg font-medium">
+              Not just a builder — a complete intelligence platform for your career.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {FEATURES.map((f) => (
+            {FEATURES.map((f, idx) => (
               <div
                 key={f.title}
-                className="glass-card p-8 group border border-white/20 dark:border-white/10"
+                className="glass-card p-8 group relative overflow-hidden animate-slide-up"
+                style={{ animationDelay: `${idx * 0.1}s` }}
               >
-                <div className="text-4xl mb-5 transform group-hover:scale-110 transition-transform duration-300">{f.icon}</div>
-                <h3 className="font-bold text-xl text-foreground mb-3">{f.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{f.description}</p>
+                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 dark:bg-blue-500/10 rounded-full -mr-12 -mt-12 transition-all group-hover:scale-150 duration-700" />
+                <div className="text-5xl mb-6 inline-block animate-float" style={{ animationDelay: `${idx * -1.5}s` }}>
+                  {f.icon}
+                </div>
+                <h3 className="font-bold text-2xl text-slate-900 dark:text-white mb-3 tracking-tight">{f.title}</h3>
+                <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium">{f.description}</p>
               </div>
             ))}
           </div>

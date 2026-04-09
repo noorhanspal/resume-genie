@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useUser, useClerk } from "@clerk/nextjs";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function SmartAnalysis() {
   const { user, isLoaded } = useUser();
@@ -51,77 +52,77 @@ export default function SmartAnalysis() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      {/* Navbar - Simplified for this page */}
-      <nav className="border-b border-gray-100 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-500 antialiased">
+      {/* Navbar */}
+      <nav className="border-b border-white/20 dark:border-white/10 glass bg-white/40 dark:bg-slate-900/40 sticky top-0 z-50 transition-all duration-500 backdrop-blur-2xl px-6 py-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Link href="/">
-            <span className="text-xl font-bold cursor-pointer">
-              Resume <span className="text-blue-600">Genie</span>
+             <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-500 dark:from-purple-400 dark:via-indigo-300 dark:to-blue-300 tracking-tighter cursor-pointer">
+              Resume Genie
             </span>
           </Link>
-          {!isLoaded ? null : user ? (
-            <div className="flex items-center gap-3">
-              <Link href="/dashboard">
-                <Button variant="outline" className="text-sm px-4">My Resumes</Button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            {!isLoaded ? null : user ? (
+              <div className="hidden md:flex items-center gap-2">
+                <Link href="/dashboard">
+                  <Button variant="ghost" className="glass-button rounded-full px-5 font-black text-slate-700 dark:text-slate-100">Dashboard</Button>
+                </Link>
+                <Link href="/builder">
+                  <Button className="glass-button bg-purple-600 dark:bg-purple-600/80 text-white text-sm px-6 rounded-full font-bold shadow-purple-500/20 shadow-lg">
+                    + New Resume
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <Link href="/login">
+                <Button className="glass-button bg-purple-600 dark:bg-purple-600/80 text-white text-sm px-8 rounded-full font-bold shadow-purple-500/20 shadow-lg">
+                  Login
+                </Button>
               </Link>
-              <Link href="/builder">
-                <Button variant="outline" className="text-sm px-4">New Resume</Button>
-              </Link>
-              <Button
-                variant="ghost"
-                className="text-sm text-gray-500 hover:text-red-600"
-                onClick={() => signOut({ redirectUrl: "/" })}
-              >
-                Sign Out
-              </Button>
-            </div>
-          ) : (
-            <Link href="/login">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-5">
-                Login
-              </Button>
-            </Link>
-          )}
+            )}
+          </div>
         </div>
       </nav>
 
-      <div className="max-w-3xl mx-auto py-12 px-6">
-        <div className="mb-8 border-b pb-6">
-          <h1 className="text-3xl font-bold mb-2">Smart Resume Analysis</h1>
-          <p className="text-gray-500">
-            Upload your existing resume (PDF or DOCX) to get instant AI feedback. 
-            We'll extract your skills, suggest the best job roles for your profile, 
-            detect weak points, and give you actionable improvement tips.
+      <div className="max-w-4xl mx-auto py-20 px-6">
+        <div className="text-center mb-16 animate-pop-in">
+          <h1 className="text-5xl sm:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tighter">
+            Smart <span className="text-purple-600 dark:text-purple-400">Analysis</span> 🧠
+          </h1>
+          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
+            Upload your existing resume to get instant, deep-learning feedback. 
+            We detect gaps, extract skills, and help you improve instantly.
           </p>
         </div>
 
         {/* Upload Section */}
-        <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 mb-8">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Upload Resume (PDF / DOCX)
+        <div className="glass-card bg-white/60 dark:bg-slate-900/60 p-10 mb-16 border-white/40 dark:border-white/10 animate-slide-up">
+          <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1 mb-3 block">
+            Upload Existing Resume (PDF / DOCX)
           </label>
-          <div className="flex gap-4 items-center">
+          <div className="flex flex-col sm:flex-row gap-4 items-center">
             <input 
               type="file" 
               accept=".pdf,.docx" 
               onChange={handleFileChange}
-              className="block w-full text-sm text-gray-500
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-md file:border-0
-                file:text-sm file:font-semibold
-                file:bg-blue-50 file:text-blue-700
-                hover:file:bg-blue-100 border border-gray-300 rounded-md bg-white p-1"
+              className="block w-full text-sm text-slate-500
+                file:mr-6 file:py-3 file:px-6
+                file:rounded-xl file:border-0
+                file:text-sm file:font-black
+                file:bg-purple-600 file:text-white
+                hover:file:bg-purple-700
+                glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 p-2 rounded-2xl"
             />
             <Button 
               onClick={handleAnalyze} 
               disabled={!file || loading}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8"
+              className="glass-button bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-10 h-14 text-lg rounded-2xl font-black shadow-xl"
             >
-              {loading ? "Analyzing..." : "Analyze"}
+              {loading ? "Analyzing..." : "Analyze →"}
             </Button>
           </div>
-          {error && <p className="text-red-500 text-sm mt-3">{error}</p>}
+          {error && <p className="text-red-500 dark:text-red-400 text-sm mt-6 font-bold text-center">{error}</p>}
         </div>
 
         {/* Results Section */}
@@ -129,13 +130,13 @@ export default function SmartAnalysis() {
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             
             {/* Roles */}
-            <div className="bg-white p-6 rounded-xl border border-blue-100 shadow-sm">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                🎯 Best Fit Roles
+            <div className="glass-card bg-white/60 dark:bg-slate-900/60 p-8 border-white/40 dark:border-white/10">
+              <h2 className="text-xl font-black text-slate-900 dark:text-white mb-6 flex items-center gap-3 tracking-tight">
+                <span className="p-2 bg-blue-500/10 rounded-xl">🎯</span> Best Fit Roles
               </h2>
               <div className="flex flex-wrap gap-2">
                 {results.best_roles?.map((role: string, idx: number) => (
-                  <span key={idx} className="bg-blue-50 text-blue-700 font-medium px-3 py-1 rounded-full text-sm">
+                  <span key={idx} className="bg-blue-500/10 text-blue-700 dark:text-blue-300 font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-tight shadow-sm">
                     {role}
                   </span>
                 ))}
@@ -143,40 +144,46 @@ export default function SmartAnalysis() {
             </div>
 
             {/* Extracted Skills */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                ⚡ Skills Extracted
+            <div className="glass-card bg-white/60 dark:bg-slate-900/60 p-8 border-white/40 dark:border-white/10">
+              <h2 className="text-xl font-black text-slate-900 dark:text-white mb-6 flex items-center gap-3 tracking-tight">
+                <span className="p-2 bg-purple-500/10 rounded-xl">⚡</span> Skills Extracted
               </h2>
               <div className="flex flex-wrap gap-2">
                 {results.skills_extracted?.map((skill: string, idx: number) => (
-                  <span key={idx} className="bg-gray-100 border border-gray-200 text-gray-700 px-3 py-1 rounded-md text-sm">
+                  <span key={idx} className="bg-slate-100 dark:bg-slate-800 border border-white/40 dark:border-white/10 text-slate-700 dark:text-slate-300 px-4 py-1.5 rounded-xl text-xs font-bold shadow-sm">
                     {skill}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Weak Points */}
-              <div className="bg-red-50/50 p-6 rounded-xl border border-red-100">
-                <h2 className="text-lg font-bold text-red-700 mb-4 flex items-center gap-2">
-                  ⚠️ Weak Points Detected
+              <div className="glass-card bg-red-500/5 dark:bg-red-500/10 p-8 border-red-500/20">
+                <h2 className="text-lg font-black text-red-600 dark:text-red-400 mb-6 flex items-center gap-3 tracking-tight">
+                  <span className="p-2 bg-red-500/10 rounded-xl text-base">⚠️</span> Weak Points
                 </h2>
-                <ul className="list-disc pl-5 space-y-2 text-sm text-red-900/80">
+                <ul className="space-y-4">
                   {results.weak_points?.map((point: string, idx: number) => (
-                    <li key={idx}>{point}</li>
+                    <li key={idx} className="flex gap-3 text-sm text-red-900/80 dark:text-red-200/80 font-medium leading-relaxed">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                      {point}
+                    </li>
                   ))}
                 </ul>
               </div>
 
               {/* Suggestions */}
-              <div className="bg-green-50/50 p-6 rounded-xl border border-green-100">
-                <h2 className="text-lg font-bold text-green-700 mb-4 flex items-center gap-2">
-                  💡 Improvement Suggestions
+              <div className="glass-card bg-emerald-500/5 dark:bg-emerald-500/10 p-8 border-emerald-500/20">
+                <h2 className="text-lg font-black text-emerald-600 dark:text-emerald-400 mb-6 flex items-center gap-3 tracking-tight">
+                  <span className="p-2 bg-emerald-500/10 rounded-xl text-base">💡</span> Fixes
                 </h2>
-                <ul className="list-disc pl-5 space-y-2 text-sm text-green-900/80">
+                <ul className="space-y-4">
                   {results.improvement_suggestions?.map((suggestion: string, idx: number) => (
-                    <li key={idx}>{suggestion}</li>
+                    <li key={idx} className="flex gap-3 text-sm text-emerald-900/80 dark:text-emerald-200/80 font-medium leading-relaxed">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                      {suggestion}
+                    </li>
                   ))}
                 </ul>
               </div>
