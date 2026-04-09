@@ -10,6 +10,7 @@ import { ResumeData, TemplateId } from "@/lib/types";
 import ClassicTemplate from "@/components/templates/ClassicTemplate";
 import ModernTemplate from "@/components/templates/ModernTemplate";
 import MinimalTemplate from "@/components/templates/MinimalTemplate";
+import ProfessionalTemplate from "@/components/templates/ProfessionalTemplate";
 
 interface EnhancedExperience {
   company: string;
@@ -43,6 +44,7 @@ const TEMPLATES: { id: TemplateId; label: string; description: string; color: st
   { id: "classic", label: "Classic", description: "Blue accents, traditional layout", color: "border-blue-500 bg-blue-50 text-blue-700" },
   { id: "modern", label: "Modern", description: "Dark header, emerald highlights", color: "border-emerald-500 bg-emerald-50 text-emerald-700" },
   { id: "minimal", label: "Minimal", description: "Clean, black & white, serif", color: "border-gray-800 bg-gray-50 text-gray-800" },
+  { id: "professional", label: "Professional", description: "Top Academic format", color: "border-gray-900 bg-gray-100 text-gray-900" },
 ];
 
 function ScoreRing({ score }: { score: number }) {
@@ -370,6 +372,15 @@ export default function PreviewPage() {
         )}
         {selectedTemplate === "minimal" && (
           <MinimalTemplate 
+            resumeData={previewData} 
+            enhancedData={enhancedData} 
+            isEditing={isEditing} 
+            onUpdateResume={setResumeData} 
+            onUpdateEnhanced={setEnhancedData} 
+          />
+        )}
+        {selectedTemplate === "professional" && (
+          <ProfessionalTemplate 
             resumeData={previewData} 
             enhancedData={enhancedData} 
             isEditing={isEditing} 

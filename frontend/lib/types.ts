@@ -31,7 +31,7 @@ export interface Project {
   link: string;
 }
 
-export type TemplateId = "classic" | "modern" | "minimal";
+export type TemplateId = "classic" | "modern" | "minimal" | "professional";
 
 export interface ResumeData {
   personal_info: PersonalInfo;

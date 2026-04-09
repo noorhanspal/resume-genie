@@ -269,6 +269,91 @@ def _generate_minimal(resume_data: ResumeData, enhanced_data: dict) -> bytes:
 
 
 # ─────────────────────────────────────────────
+# PROFESSIONAL TEMPLATE
+# ─────────────────────────────────────────────
+def _generate_professional(resume_data: ResumeData, enhanced_data: dict) -> bytes:
+    BLACK = colors.black
+
+    buffer = BytesIO()
+    doc = _build_doc(buffer)
+
+    name_s = ParagraphStyle("N", fontSize=20, fontName="Times-Bold", textColor=BLACK, alignment=TA_CENTER, spaceAfter=2)
+    contact_s = ParagraphStyle("C", fontSize=10, fontName="Times-Roman", textColor=BLACK, alignment=TA_CENTER, spaceAfter=8)
+    sec_s = ParagraphStyle("S", fontSize=11, fontName="Times-Bold", textColor=BLACK, spaceBefore=10, spaceAfter=1)
+    
+    body_s = ParagraphStyle("B", fontSize=10, fontName="Times-Roman", textColor=BLACK, spaceAfter=2, leading=12)
+    bold_s = ParagraphStyle("BB", fontSize=10, fontName="Times-Bold", textColor=BLACK, spaceAfter=2, leading=12)
+    italic_s = ParagraphStyle("BI", fontSize=10, fontName="Times-Italic", textColor=BLACK, spaceAfter=2, leading=12)
+    bullet_s = ParagraphStyle("BL", fontSize=10, fontName="Times-Roman", textColor=BLACK, leftIndent=12, spaceAfter=1, leading=12)
+
+    story = []
+    info = resume_data.personal_info
+
+    story.append(Paragraph(info.full_name.upper(), name_s))
+    parts = list(filter(None, [info.location, info.phone, info.email, 
+                  "LinkedIn" if info.linkedin else "", 
+                  "Portfolio" if info.website else ""]))
+    story.append(Paragraph("  |  ".join(parts), contact_s))
+
+    def section_header(title):
+        story.append(Paragraph(title.upper(), sec_s))
+        story.append(HRFlowable(width="100%", thickness=1, color=BLACK, spaceAfter=4, spaceBefore=1))
+
+    if resume_data.education:
+        section_header("EDUCATION")
+        for edu in resume_data.education:
+            t_data = [
+                [Paragraph(edu.institution, bold_s), Paragraph(edu.graduation_year, ParagraphStyle("R1", parent=body_s, alignment=2))],
+                [Paragraph(edu.degree + " in " + edu.field, italic_s), Paragraph(f"GPA: {edu.gpa}" if edu.gpa else "", ParagraphStyle("R2", parent=italic_s, alignment=2))]
+            ]
+            t = Table(t_data, colWidths=[doc.width * 0.7, doc.width * 0.3])
+            t.setStyle(TableStyle([
+                ('PADDING', (0,0), (-1,-1), 0),
+                ('BOTTOMPADDING', (0,1), (-1,1), 4)
+            ]))
+            story.append(t)
+
+    exps = enhanced_data.get("enhanced_experience", [])
+    if exps:
+        section_header("EXPERIENCE")
+        for exp in exps:
+            t_data = [
+                [Paragraph(exp.get("company", ""), bold_s), Paragraph("", ParagraphStyle("R3", parent=body_s, alignment=2))],
+                [Paragraph(exp.get("role", ""), italic_s), Paragraph(f"{exp.get('start_date', '')} – {exp.get('end_date', '')}", ParagraphStyle("R4", parent=italic_s, alignment=2))]
+            ]
+            t = Table(t_data, colWidths=[doc.width * 0.7, doc.width * 0.3])
+            t.setStyle(TableStyle([('PADDING', (0,0), (-1,-1), 0)]))
+            story.append(t)
+            
+            for bullet in exp.get("bullets", []):
+                story.append(Paragraph(f"• {bullet}", bullet_s))
+            story.append(Spacer(1, 4))
+
+    projs = enhanced_data.get("enhanced_projects", [])
+    if projs:
+        section_header("PROJECTS")
+        for proj in projs:
+            t_data = [
+                [Paragraph(proj.get("name", ""), bold_s), Paragraph("GitHub", ParagraphStyle("R5", parent=body_s, alignment=2, textColor=colors.HexColor("#1e40af")))]
+            ]
+            t = Table(t_data, colWidths=[doc.width * 0.85, doc.width * 0.15])
+            t.setStyle(TableStyle([('PADDING', (0,0), (-1,-1), 0)]))
+            story.append(t)
+            
+            story.append(Paragraph(f"• {proj.get('description', '')}", bullet_s))
+            if proj.get("technologies"):
+                story.append(Paragraph(f"Technologies: {proj.get('technologies', '')}", ParagraphStyle("C", parent=body_s, leftIndent=12, fontSize=9, textColor=colors.HexColor("#444444"))))
+            story.append(Spacer(1, 4))
+
+    if resume_data.skills:
+        section_header("TECHNICAL SKILLS AND INTERESTS")
+        story.append(Paragraph(f"<b>Skills:</b> {', '.join(resume_data.skills)}", body_s))
+
+    doc.build(story)
+    return buffer.getvalue()
+
+
+# ─────────────────────────────────────────────
 # PUBLIC ENTRY POINT
 # ─────────────────────────────────────────────
 def generate_pdf(resume_data: ResumeData, enhanced_data: dict) -> bytes:
@@ -277,4 +362,6 @@ def generate_pdf(resume_data: ResumeData, enhanced_data: dict) -> bytes:
         return _generate_modern(resume_data, enhanced_data)
     if template == "minimal":
         return _generate_minimal(resume_data, enhanced_data)
+    if template == "professional":
+        return _generate_professional(resume_data, enhanced_data)
     return _generate_classic(resume_data, enhanced_data)
