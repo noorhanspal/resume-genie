@@ -91,50 +91,68 @@ export default function JobsFinder() {
   if (!isLoaded) return <div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-transparent pb-20 text-foreground transition-colors duration-500 antialiased">
-      <nav className="border-b border-white/20 dark:border-white/10 glass bg-white/40 dark:bg-slate-900/40 sticky top-0 w-full z-50 transition-all duration-500 backdrop-blur-2xl px-6 py-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 dark:from-orange-400 dark:via-orange-300 dark:to-amber-300 tracking-tighter">
-            Resume Genie
-          </Link>
-          <div className="flex items-center gap-3">
-             <ThemeToggle />
-             <Link href="/dashboard">
-               <Button variant="ghost" className="glass-button rounded-full px-6 font-black text-slate-700 dark:text-slate-100">Dashboard</Button>
-             </Link>
+    <div className="min-h-screen bg-transparent pb-32 text-foreground transition-colors duration-500 antialiased">
+      <nav className="glass sticky top-0 z-50 transition-all duration-500 backdrop-blur-2xl px-6 py-3 border-b border-border">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-8">
+            <Link href="/" className="text-xl font-sans font-normal tracking-tight text-foreground cursor-pointer">
+              Resume Genie
+            </Link>
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/smart-analysis" className="text-button-label text-foreground/60 hover:text-destructive transition-colors">Smart Analysis</Link>
+              <Link href="/jobs" className="text-button-label text-foreground hover:text-destructive transition-colors">Find Jobs</Link>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            {!isLoaded ? null : user ? (
+              <div className="flex items-center gap-4">
+                <Link href="/builder">
+                  <Button className="cursor-button-primary">
+                    + New Resume
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <Link href="/login">
+                <Button className="cursor-button-primary">
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </nav>
 
-      <main className="max-w-4xl mx-auto px-6 pt-32">
-        <div className="text-center mb-16 animate-pop-in">
-          <h1 className="text-5xl sm:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tighter">
-            Find Your <span className="text-orange-600 dark:text-orange-400">Perfect Match</span> 🎯
+      <main className="max-w-4xl mx-auto px-6 py-32">
+        <div className="text-center mb-20 animate-pop-in">
+          <h1 className="text-section-heading text-foreground mb-6">
+            Find Your Match
           </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
+          <p className="text-body-serif text-foreground/50 max-w-2xl mx-auto">
             We use AI to find jobs that fit your profile instantly. 
             No more manual searching — just magic results.
           </p>
         </div>
 
         {/* Input Section */}
-        <div className="glass-card bg-white/60 dark:bg-slate-900/60 p-10 mb-16 border-white/40 dark:border-white/10 animate-slide-up">
+        <div className="glass-card p-12 mb-16 animate-slide-up">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1">Target Role</label>
+              <label className="text-[11px] font-sans font-medium uppercase tracking-widest text-foreground/40 ml-1">Target Role</label>
               <input
                 type="text"
-                className="w-full glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 h-14 rounded-2xl px-6 outline-none focus:ring-4 ring-orange-500/10 font-bold text-slate-800 dark:text-slate-100 tracking-tight"
+                className="w-full bg-surface-100 border border-border h-14 rounded-lg px-6 outline-none focus:border-foreground/30 font-sans text-foreground transition-all"
                 placeholder="e.g. Frontend Developer"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1">Your Top Skills</label>
+              <label className="text-[11px] font-sans font-medium uppercase tracking-widest text-foreground/40 ml-1">Your Top Skills</label>
               <input
                 type="text"
-                className="w-full glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 h-14 rounded-2xl px-6 outline-none focus:ring-4 ring-orange-500/10 font-bold text-slate-800 dark:text-slate-100 tracking-tight"
+                className="w-full bg-surface-100 border border-border h-14 rounded-lg px-6 outline-none focus:border-foreground/30 font-sans text-foreground transition-all"
                 placeholder="e.g. React, JavaScript, CSS"
                 value={skills}
                 onChange={(e) => setSkills(e.target.value)}
@@ -142,21 +160,21 @@ export default function JobsFinder() {
             </div>
           </div>
 
-          {error && <p className="text-red-500 dark:text-red-400 text-sm mb-6 text-center font-bold tracking-tight">{error}</p>}
+          {error && <p className="text-destructive text-sm mb-8 text-center">{error}</p>}
 
           <div className="text-center">
             <Button
               onClick={handleSearch}
               disabled={loading}
-              className="glass-button bg-gradient-to-r from-orange-600 to-amber-600 dark:from-orange-600/80 dark:to-amber-500/80 hover:from-orange-700 hover:to-amber-700 text-white px-12 h-16 text-xl rounded-2xl font-black shadow-2xl shadow-orange-500/20 transition-all active:scale-95"
+              className="cursor-button-primary !py-5 !px-12 !h-auto text-lg !bg-foreground !text-background hover:!text-destructive"
             >
               {loading ? (
                 <span className="flex items-center gap-3">
-                  <Loader2 className="h-6 w-6 animate-spin" />
+                  <Loader2 className="h-5 w-5 animate-spin" />
                   Analyzing Match...
                 </span>
               ) : (
-                "Magic Search Jobs ✨"
+                "Search Jobs ✨"
               )}
             </Button>
           </div>
@@ -164,78 +182,85 @@ export default function JobsFinder() {
 
         {/* Results Section */}
         {result && (
-          <div>
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                🔥 Hot Jobs For You
+          <div className="space-y-10">
+            <div className="mb-10 flex items-center justify-between">
+              <h2 className="text-title-small text-foreground uppercase tracking-wider">
+                Recommended Jobs
               </h2>
-              <span className="bg-orange-100 text-orange-800 text-xs font-semibold px-3 py-1 rounded-full">
-                Searched for: "{result.keyword}"
+              <span className="cursor-pill text-[10px] uppercase">
+                {result.keyword}
               </span>
             </div>
 
             {result.jobs.length === 0 ? (
-              <div className="text-center py-12 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                <p className="text-gray-500">No matching jobs found today. Try refining your skills or role!</p>
+              <div className="text-center py-20 glass-card">
+                <p className="text-body-serif-sm text-foreground/40">No matching jobs found. Try refining your profile.</p>
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-10">
                 {result.jobs.map((job, idx) => (
-                  <div key={idx} className="glass-card bg-white/60 dark:bg-slate-900/60 transition-all duration-500 overflow-hidden animate-pop-in" style={{ animationDelay: `${idx * 0.1}s` }}>
-                    <div className="p-8 md:flex justify-between items-start gap-8 border-b border-white/20 dark:border-white/10">
+                  <div key={idx} className="glass-card animate-pop-in" style={{ animationDelay: `${idx * 0.1}s` }}>
+                    <div className="p-10 flex flex-col md:flex-row justify-between items-start gap-10">
                       <div className="flex-1">
-                        <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight mb-2">
+                        <h3 className="text-title-small text-foreground mb-3">
                           {job.job_title}
                         </h3>
-                        <p className="text-slate-500 dark:text-slate-400 flex items-center gap-2 text-base font-bold mb-6">
-                          <Briefcase className="w-5 h-5 text-orange-500 dark:text-orange-400" />
-                          {job.company} • <span className="opacity-80 font-medium">{job.location}</span>
+                        <p className="flex items-center gap-3 text-body-serif-sm text-foreground/40 mb-8">
+                          <Briefcase className="w-4 h-4 opacity-40" />
+                          {job.company} • {job.location}
                         </p>
 
-                        <div className="glass bg-blue-500/5 dark:bg-blue-400/5 rounded-3xl p-6 border-blue-500/10 dark:border-blue-400/10">
-                          <p className="text-[15px] text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-                            <span className="text-blue-600 dark:text-blue-400 font-black tracking-tight mr-2 uppercase text-xs">AI INSIGHT</span>
-                            {job.why_it_fits}
+                        <div className="bg-surface-100 p-8 rounded-lg border border-border">
+                          <p className="text-body-serif-sm text-foreground/70 leading-relaxed italic">
+                            <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-accent mb-3 block">AI Insight</span>
+                            "{job.why_it_fits}"
                           </p>
                         </div>
                       </div>
 
-                      <div className="mt-8 md:mt-0 flex flex-col items-center">
-                        <div className="relative w-32 h-32 flex items-center justify-center animate-float" style={{ animationDelay: `${idx * -2}s` }}>
-                           <div className="absolute inset-0 rounded-full border-[6px] border-slate-200 dark:border-slate-800" />
-                           <div 
-                             className={`absolute inset-0 rounded-full border-[6px] transition-all duration-1000 ${job.match_percentage >= 80 ? 'border-green-500' : job.match_percentage >= 60 ? 'border-orange-500' : 'border-red-500'}`}
-                             style={{ clipPath: `conic-gradient(black ${job.match_percentage}%, transparent 0)` }}
-                           />
-                           <div className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white">
-                             {job.match_percentage}%
+                      <div className="flex flex-col items-center flex-shrink-0">
+                        <div className="relative w-24 h-24 flex items-center justify-center">
+                           <svg width="96" height="96" className="-rotate-90">
+                             <circle cx="48" cy="48" r="40" fill="none" stroke="var(--border)" strokeWidth="4" />
+                             <circle
+                               cx="48" cy="48" r="40" fill="none"
+                               stroke={job.match_percentage >= 80 ? 'var(--color-success)' : job.match_percentage >= 60 ? 'var(--accent)' : 'var(--destructive)'}
+                               strokeWidth="4"
+                               strokeDasharray={251.3}
+                               strokeDashoffset={251.3 - (job.match_percentage / 100) * 251.3}
+                               strokeLinecap="round"
+                               className="transition-all duration-1000"
+                             />
+                           </svg>
+                           <div className="absolute inset-0 flex items-center justify-center">
+                             <span className="text-xl font-sans font-normal text-foreground">{job.match_percentage}%</span>
                            </div>
                         </div>
-                        <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mt-3">Match Accuracy</p>
+                        <p className="text-[10px] uppercase tracking-widest text-foreground/30 mt-4">Match</p>
                       </div>
                     </div>
 
-                    <div className="px-8 py-5 bg-white/40 dark:bg-slate-950/40 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                    <div className="px-10 py-6 bg-surface-100 border-t border-border flex flex-col sm:flex-row sm:items-center justify-between gap-8">
                       <div className="flex-1">
                         {job.missing_skills.length > 0 ? (
-                          <div className="flex flex-wrap gap-2 items-center">
-                            <span className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mr-2">Focus on:</span>
+                          <div className="flex flex-wrap gap-3 items-center">
+                            <span className="text-[10px] uppercase tracking-widest text-foreground/30 mr-2">Focus area:</span>
                             {job.missing_skills.map(skill => (
-                              <span key={skill} className="bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-tighter shadow-sm">
+                              <span key={skill} className="bg-destructive/5 text-destructive border border-destructive/10 text-[11px] font-medium px-3 py-1 rounded-full uppercase tracking-tighter">
                                 {skill}
                               </span>
                             ))}
                           </div>
                         ) : (
-                          <div className="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm font-black tracking-tight">
-                            <CheckCircle2 className="w-5 h-5" /> PERFECT SKILL MATCH
+                          <div className="flex items-center gap-3 text-success text-[11px] font-medium uppercase tracking-widest">
+                            <CheckCircle2 className="w-4 h-4" /> Perfect skill match
                           </div>
                         )}
                       </div>
 
                       <Button
                         onClick={() => window.open(job.apply_link, "_blank")}
-                        className="glass-button bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full px-10 h-12 font-black tracking-tight shadow-xl"
+                        className="cursor-button-primary !px-10 h-11"
                       >
                         Apply Now →
                       </Button>
@@ -248,5 +273,6 @@ export default function JobsFinder() {
         )}
       </main>
     </div>
+
   );
 }

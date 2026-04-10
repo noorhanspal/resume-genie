@@ -53,30 +53,30 @@ export default function SmartAnalysis() {
 
   return (
     <div className="min-h-screen bg-transparent text-foreground transition-colors duration-500 antialiased">
-      {/* Navbar */}
-      <nav className="border-b border-white/20 dark:border-white/10 glass bg-white/40 dark:bg-slate-900/40 sticky top-0 z-50 transition-all duration-500 backdrop-blur-2xl px-6 py-4">
+      <nav className="glass sticky top-0 z-50 transition-all duration-500 backdrop-blur-2xl px-6 py-3 border-b border-border">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/">
-             <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-500 dark:from-purple-400 dark:via-indigo-300 dark:to-blue-300 tracking-tighter cursor-pointer">
+          <div className="flex items-center gap-8">
+            <Link href="/" className="text-xl font-sans font-normal tracking-tight text-foreground cursor-pointer">
               Resume Genie
-            </span>
-          </Link>
-          <div className="flex items-center gap-2">
+            </Link>
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/smart-analysis" className="text-button-label text-foreground hover:text-destructive transition-colors">Smart Analysis</Link>
+              <Link href="/jobs" className="text-button-label text-foreground/60 hover:text-destructive transition-colors">Find Jobs</Link>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
             <ThemeToggle />
             {!isLoaded ? null : user ? (
-              <div className="hidden md:flex items-center gap-2">
-                <Link href="/dashboard">
-                  <Button variant="ghost" className="glass-button rounded-full px-5 font-black text-slate-700 dark:text-slate-100">Dashboard</Button>
-                </Link>
+              <div className="flex items-center gap-4">
                 <Link href="/builder">
-                  <Button className="glass-button bg-purple-600 dark:bg-purple-600/80 text-white text-sm px-6 rounded-full font-bold shadow-purple-500/20 shadow-lg">
+                  <Button className="cursor-button-primary">
                     + New Resume
                   </Button>
                 </Link>
               </div>
             ) : (
               <Link href="/login">
-                <Button className="glass-button bg-purple-600 dark:bg-purple-600/80 text-white text-sm px-8 rounded-full font-bold shadow-purple-500/20 shadow-lg">
+                <Button className="cursor-button-primary">
                   Login
                 </Button>
               </Link>
@@ -85,58 +85,58 @@ export default function SmartAnalysis() {
         </div>
       </nav>
 
-      <div className="max-w-4xl mx-auto py-20 px-6">
-        <div className="text-center mb-16 animate-pop-in">
-          <h1 className="text-5xl sm:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tighter">
-            Smart <span className="text-purple-600 dark:text-purple-400">Analysis</span> 🧠
+      <div className="max-w-4xl mx-auto py-32 px-6">
+        <div className="text-center mb-24 animate-pop-in">
+          <h1 className="text-section-heading text-foreground mb-6">
+            Smart Analysis
           </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
+          <p className="text-body-serif text-foreground/50 max-w-2xl mx-auto">
             Upload your existing resume to get instant, deep-learning feedback. 
             We detect gaps, extract skills, and help you improve instantly.
           </p>
         </div>
 
         {/* Upload Section */}
-        <div className="glass-card bg-white/60 dark:bg-slate-900/60 p-10 mb-16 border-white/40 dark:border-white/10 animate-slide-up">
-          <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1 mb-3 block">
+        <div className="glass-card p-12 mb-16 animate-slide-up">
+          <label className="text-[11px] font-sans font-medium uppercase tracking-widest text-foreground/40 mb-4 block">
             Upload Existing Resume (PDF / DOCX)
           </label>
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr,auto] gap-6 items-center">
             <input 
               type="file" 
               accept=".pdf,.docx" 
               onChange={handleFileChange}
-              className="block w-full text-sm text-slate-500
-                file:mr-6 file:py-3 file:px-6
-                file:rounded-xl file:border-0
-                file:text-sm file:font-black
-                file:bg-purple-600 file:text-white
-                hover:file:bg-purple-700
-                glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 p-2 rounded-2xl"
+              className="block w-full text-sm text-foreground/60
+                file:mr-6 file:py-2 file:px-4
+                file:rounded-lg file:border-0
+                file:text-[13px] file:font-sans
+                file:bg-surface-300 file:text-foreground
+                hover:file:text-destructive
+                bg-surface-100 border border-border p-3 rounded-lg"
             />
             <Button 
               onClick={handleAnalyze} 
               disabled={!file || loading}
-              className="glass-button bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-10 h-14 text-lg rounded-2xl font-black shadow-xl"
+              className="cursor-button-primary !py-4 !px-10 !h-auto text-base"
             >
               {loading ? "Analyzing..." : "Analyze →"}
             </Button>
           </div>
-          {error && <p className="text-red-500 dark:text-red-400 text-sm mt-6 font-bold text-center">{error}</p>}
+          {error && <p className="text-destructive text-sm mt-8 text-center">{error}</p>}
         </div>
 
         {/* Results Section */}
         {results && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
             
             {/* Roles */}
-            <div className="glass-card bg-white/60 dark:bg-slate-900/60 p-8 border-white/40 dark:border-white/10">
-              <h2 className="text-xl font-black text-slate-900 dark:text-white mb-6 flex items-center gap-3 tracking-tight">
-                <span className="p-2 bg-blue-500/10 rounded-xl">🎯</span> Best Fit Roles
+            <div className="glass-card p-10">
+              <h2 className="text-title-small text-foreground mb-8 flex items-center gap-3">
+                <span className="opacity-50">🎯</span> Best Fit Roles
               </h2>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {results.best_roles?.map((role: string, idx: number) => (
-                  <span key={idx} className="bg-blue-500/10 text-blue-700 dark:text-blue-300 font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-tight shadow-sm">
+                  <span key={idx} className="cursor-pill text-xs uppercase tracking-wider">
                     {role}
                   </span>
                 ))}
@@ -144,29 +144,29 @@ export default function SmartAnalysis() {
             </div>
 
             {/* Extracted Skills */}
-            <div className="glass-card bg-white/60 dark:bg-slate-900/60 p-8 border-white/40 dark:border-white/10">
-              <h2 className="text-xl font-black text-slate-900 dark:text-white mb-6 flex items-center gap-3 tracking-tight">
-                <span className="p-2 bg-purple-500/10 rounded-xl">⚡</span> Skills Extracted
+            <div className="glass-card p-10">
+              <h2 className="text-title-small text-foreground mb-8 flex items-center gap-3">
+                <span className="opacity-50">⚡</span> Skills Extracted
               </h2>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {results.skills_extracted?.map((skill: string, idx: number) => (
-                  <span key={idx} className="bg-slate-100 dark:bg-slate-800 border border-white/40 dark:border-white/10 text-slate-700 dark:text-slate-300 px-4 py-1.5 rounded-xl text-xs font-bold shadow-sm">
+                  <span key={idx} className="bg-surface-100 border border-border text-foreground/80 px-4 py-2 rounded-lg text-xs font-sans">
                     {skill}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               {/* Weak Points */}
-              <div className="glass-card bg-red-500/5 dark:bg-red-500/10 p-8 border-red-500/20">
-                <h2 className="text-lg font-black text-red-600 dark:text-red-400 mb-6 flex items-center gap-3 tracking-tight">
-                  <span className="p-2 bg-red-500/10 rounded-xl text-base">⚠️</span> Weak Points
+              <div className="glass-card p-10 border-destructive/20 bg-destructive/5">
+                <h2 className="text-title-small text-destructive mb-8 flex items-center gap-3">
+                  <span className="text-base opacity-70">⚠️</span> Weak Points
                 </h2>
-                <ul className="space-y-4">
+                <ul className="space-y-5">
                   {results.weak_points?.map((point: string, idx: number) => (
-                    <li key={idx} className="flex gap-3 text-sm text-red-900/80 dark:text-red-200/80 font-medium leading-relaxed">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                    <li key={idx} className="flex gap-4 text-body-serif-sm text-destructive/80">
+                      <span className="mt-2 w-1 h-1 rounded-full bg-destructive shrink-0" />
                       {point}
                     </li>
                   ))}
@@ -174,14 +174,14 @@ export default function SmartAnalysis() {
               </div>
 
               {/* Suggestions */}
-              <div className="glass-card bg-emerald-500/5 dark:bg-emerald-500/10 p-8 border-emerald-500/20">
-                <h2 className="text-lg font-black text-emerald-600 dark:text-emerald-400 mb-6 flex items-center gap-3 tracking-tight">
-                  <span className="p-2 bg-emerald-500/10 rounded-xl text-base">💡</span> Fixes
+              <div className="glass-card p-10 border-accent/20 bg-accent/5">
+                <h2 className="text-title-small text-accent mb-8 flex items-center gap-3">
+                  <span className="text-base opacity-70">💡</span> Fixes
                 </h2>
-                <ul className="space-y-4">
+                <ul className="space-y-5">
                   {results.improvement_suggestions?.map((suggestion: string, idx: number) => (
-                    <li key={idx} className="flex gap-3 text-sm text-emerald-900/80 dark:text-emerald-200/80 font-medium leading-relaxed">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                    <li key={idx} className="flex gap-4 text-body-serif-sm text-accent/80">
+                      <span className="mt-2 w-1 h-1 rounded-full bg-accent shrink-0" />
                       {suggestion}
                     </li>
                   ))}
@@ -193,5 +193,6 @@ export default function SmartAnalysis() {
         )}
       </div>
     </div>
+
   );
 }

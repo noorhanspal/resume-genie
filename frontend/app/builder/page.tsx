@@ -148,33 +148,32 @@ export default function BuilderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent py-12 px-4 text-foreground transition-colors duration-500 antialiased">
-      <div className="max-w-3xl mx-auto glass-card p-10 relative overflow-hidden bg-white/60 dark:bg-slate-900/60 animate-pop-in">
-        <div className="absolute top-6 right-6">
+    <div className="min-h-screen bg-transparent py-20 px-4 text-foreground transition-colors duration-500 antialiased">
+      <div className="max-w-3xl mx-auto glass-card p-12 relative animate-pop-in">
+        <div className="absolute top-8 right-8">
           <ThemeToggle />
         </div>
         
         {/* Header */}
-        <div className="mb-10 text-center pt-2">
-          <h1 className="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 dark:from-blue-400 dark:via-indigo-300 dark:to-purple-400 tracking-tighter inline-block mb-3">
-            Resume Genie
+        <div className="mb-12 text-center">
+          <h1 className="text-section-heading text-foreground mb-4">
+            Create your resume
           </h1>
           <div className="flex items-center justify-center gap-4">
-            <div className="h-0.5 w-12 bg-blue-500/20 dark:bg-blue-400/10 rounded-full" />
-            <p className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-[10px]">
+            <p className="text-[11px] font-sans font-medium uppercase tracking-[0.2em] text-foreground/40">
               Step {step + 1} / {STEPS.length} — {STEPS[step]}
             </p>
-            <div className="h-0.5 w-12 bg-blue-500/20 dark:bg-blue-400/10 rounded-full" />
           </div>
         </div>
 
         {/* Progress */}
-        <div className="mb-12 relative h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
+        <div className="mb-16 relative h-[2px] w-full bg-border rounded-full overflow-hidden">
            <div 
-             className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-500 dark:to-indigo-400 transition-all duration-700 ease-out"
+             className="absolute top-0 left-0 h-full bg-foreground transition-all duration-700 ease-out"
              style={{ width: `${progress}%` }}
            />
         </div>
+
 
         {/* Step: Personal Info */}
         {step === 0 && (
@@ -500,10 +499,10 @@ export default function BuilderPage() {
         )}
 
         {/* Navigation */}
-        <div className="flex justify-between mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+        <div className="flex justify-between mt-16 pt-12 border-t border-border">
           <Button
             variant="ghost"
-            className="rounded-full px-8 h-12 font-black text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 transition-all hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95"
+            className="cursor-button-primary !bg-transparent hover:!bg-surface-200"
             onClick={() => setStep((s) => s - 1)}
             disabled={step === 0}
           >
@@ -512,26 +511,27 @@ export default function BuilderPage() {
 
           {step < STEPS.length - 1 ? (
             <Button
-              className="glass-button !bg-blue-600 dark:!bg-blue-600 text-white rounded-full px-10 h-12 font-black shadow-xl shadow-blue-500/40 border-none"
+              className="cursor-button-primary"
               onClick={() => setStep((s) => s + 1)}
             >
               Continue →
             </Button>
           ) : (
             <Button
-              className="glass-button bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-full px-12 h-12 font-black shadow-xl shadow-emerald-500/40 border-none"
+              className="cursor-button-primary !bg-foreground !text-background hover:!text-destructive"
               onClick={handleGenerate}
               disabled={loading}
             >
               {loading ? (
                 <span className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white/50 border-t-white rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-background/50 border-t-background rounded-full animate-spin" />
                   Generating...
                 </span>
               ) : "✨ Generate Resume"}
             </Button>
           )}
         </div>
+
       </div>
     </div>
   );

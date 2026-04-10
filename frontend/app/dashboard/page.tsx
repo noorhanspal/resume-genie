@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUser, useClerk } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
+
 
 interface SavedResume {
   id: string;
@@ -97,101 +99,167 @@ export default function DashboardPage() {
   const initials = displayName.slice(0, 2).toUpperCase();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-950">
-      <nav className="bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white">
-            Resume <span className="text-blue-600">Genie</span>
-          </Link>
+    <div className="min-h-screen bg-transparent pb-32 text-foreground transition-colors duration-500 antialiased">
+      <nav className="glass sticky top-0 z-50 transition-all duration-500 backdrop-blur-2xl px-6 py-3 border-b border-border">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-8">
+            <Link href="/" className="text-xl font-sans font-normal tracking-tight text-foreground cursor-pointer">
+              Resume Genie
+            </Link>
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/smart-analysis" className="text-button-label text-foreground/60 hover:text-foreground transition-colors">Smart Analysis</Link>
+              <Link href="/jobs" className="text-button-label text-foreground/60 hover:text-foreground transition-colors">Find Jobs</Link>
+            </div>
+          </div>
           <div className="flex items-center gap-4">
-            <Link href="/jobs">
-              <Button variant="ghost" className="text-sm px-4 text-orange-600 font-medium">Find Jobs ✨</Button>
-            </Link>
-            <Link href="/builder">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4">
-                + New Resume
-              </Button>
-            </Link>
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold">
-                {initials}
-              </div>
-              <span className="text-sm text-gray-600 dark:text-gray-300">{displayName}</span>
-              <button
-                onClick={() => signOut({ redirectUrl: "/" })}
-                className="text-sm text-gray-400 hover:text-red-600 transition-colors ml-1"
-              >
-                Sign Out
-              </button>
+            <ThemeToggle />
+            <div className="flex items-center gap-4 pl-4 border-l border-border">
+               <div className="w-8 h-8 rounded-full bg-surface-300 flex items-center justify-center text-[11px] font-sans font-medium text-foreground/60 border border-border">
+                 {initials}
+               </div>
+               <button
+                 onClick={() => signOut({ redirectUrl: "/" })}
+                 className="text-[11px] font-sans font-medium uppercase tracking-widest text-foreground/30 hover:text-destructive transition-colors"
+               >
+                 Sign Out
+               </button>
             </div>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-5xl mx-auto px-6 py-10">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Resumes</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {resumes.length === 0 ? "No resumes saved yet." : `${resumes.length} resume${resumes.length > 1 ? "s" : ""} saved`}
+      <main className="max-w-6xl mx-auto px-6 py-24">
+        <header className="mb-20 animate-pop-in">
+          <h1 className="text-section-heading text-foreground mb-4">
+            Hello, {displayName}
+          </h1>
+          <p className="text-body-serif text-foreground/50">
+            Welcome back. What would you like to build today?
           </p>
+        </header>
+
+        {/* Feature Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+          {/* Create Resume */}
+          <Link href="/builder" className="group">
+            <div className="glass-card p-10 h-full border-border hover:border-foreground/20">
+              <div className="w-12 h-12 rounded-lg bg-surface-100 flex items-center justify-center text-xl mb-8 group-hover:scale-110 transition-transform">
+                ✨
+              </div>
+              <h3 className="text-title-small text-foreground mb-3">Create Resume</h3>
+              <p className="text-body-serif-sm text-foreground/40 mb-8">
+                Build a professional, AI-optimized resume in minutes with our guided builder.
+              </p>
+              <span className="text-button-label text-foreground group-hover:text-destructive transition-colors">
+                Start Building →
+              </span>
+            </div>
+          </Link>
+
+          {/* Smart Analysis */}
+          <Link href="/smart-analysis" className="group">
+            <div className="glass-card p-10 h-full border-border hover:border-foreground/20">
+              <div className="w-12 h-12 rounded-lg bg-surface-100 flex items-center justify-center text-xl mb-8 group-hover:scale-110 transition-transform">
+                🧠
+              </div>
+              <h3 className="text-title-small text-foreground mb-3">Smart Analysis</h3>
+              <p className="text-body-serif-sm text-foreground/40 mb-8">
+                Upload your existing resume to detect skills gaps and get improvement scores.
+              </p>
+              <span className="text-button-label text-foreground group-hover:text-destructive transition-colors">
+                Analyze Now →
+              </span>
+            </div>
+          </Link>
+
+          {/* Find Jobs */}
+          <Link href="/jobs" className="group">
+            <div className="glass-card p-10 h-full border-border hover:border-foreground/20">
+              <div className="w-12 h-12 rounded-lg bg-surface-100 flex items-center justify-center text-xl mb-8 group-hover:scale-110 transition-transform">
+                🎯
+              </div>
+              <h3 className="text-title-small text-foreground mb-3">Find Jobs</h3>
+              <p className="text-body-serif-sm text-foreground/40 mb-8">
+                Get matched with hot job openings that perfectly fit your specific skills.
+              </p>
+              <span className="text-button-label text-foreground group-hover:text-destructive transition-colors">
+                Magic Match →
+              </span>
+            </div>
+          </Link>
         </div>
 
-        {resumes.length === 0 ? (
-          <div className="text-center py-24 border-2 border-dashed border-gray-200 dark:border-slate-800 rounded-2xl">
-            <div className="text-5xl mb-4">📄</div>
-            <p className="font-semibold text-gray-700 dark:text-gray-300 mb-2">No resumes yet</p>
-            <p className="text-sm text-gray-400 mb-6">
-              Build your first resume and save it from the preview page.
-            </p>
-            <Link href="/builder">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                Build My Resume →
-              </Button>
-            </Link>
+        {/* Saved Resumes */}
+        <section className="animate-slide-up">
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-title-small text-foreground uppercase tracking-widest text-xs opacity-40">
+              Saved Resumes
+            </h2>
+            <div className="h-[1px] flex-1 bg-border mx-8" />
           </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {resumes.map((resume) => {
-              const rd = resume.resume_data as { personal_info?: { full_name?: string }; job_title?: string };
-              const name = rd.personal_info?.full_name ?? "Untitled";
-              const jobTitle = rd.job_title ?? "";
-              return (
-                <div key={resume.id} className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">
-                      {name.slice(0, 2).toUpperCase()}
+
+          {resumes.length === 0 ? (
+            <div className="text-center py-24 glass-card border-dashed">
+              <p className="text-body-serif-sm text-foreground/40">No resumes saved yet. Start by creating one above.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {resumes.map((resume) => {
+                const rd = resume.resume_data as { personal_info?: { full_name?: string }; job_title?: string };
+                const name = rd.personal_info?.full_name ?? "Untitled";
+                const jobTitle = rd.job_title ?? "";
+                return (
+                  <div key={resume.id} className="glass-card p-8 group">
+                    <div className="flex items-start justify-between mb-8">
+                      <div className="w-10 h-10 rounded-lg bg-surface-100 flex items-center justify-center text-[10px] font-sans font-bold text-foreground">
+                        {name.slice(0, 2).toUpperCase()}
+                      </div>
+                      <span className="cursor-pill text-[9px] uppercase tracking-tighter">
+                        {resume.template}
+                      </span>
                     </div>
-                    <span className={`text-xs px-2 py-0.5 rounded-full capitalize font-medium ${TEMPLATE_COLORS[resume.template] ?? TEMPLATE_COLORS.classic}`}>
-                      {resume.template}
-                    </span>
+                    <div className="mb-10">
+                      <h4 className="text-button-label text-foreground mb-1">{name}</h4>
+                      {jobTitle && <p className="text-[12px] font-serif italic text-foreground/40">{jobTitle}</p>}
+                      <p className="text-[10px] font-sans font-medium uppercase tracking-widest text-foreground/20 mt-4">
+                        Saved {timeAgo(resume.created_at)}
+                      </p>
+                    </div>
+                    <div className="flex gap-3 pt-6 border-t border-border">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="cursor-button-primary !py-2 !h-auto flex-1 text-[11px]" 
+                        onClick={() => handleOpen(resume)}
+                      >
+                        Open
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="cursor-button-primary !py-2 !h-auto flex-1 text-[11px]" 
+                        onClick={() => handleDownload(resume)}
+                      >
+                        PDF
+                      </Button>
+                      <Button
+                        variant="ghost" 
+                        size="sm"
+                        className="cursor-button-primary !py-2 !h-auto text-destructive hover:!bg-destructive/5 text-[11px]"
+                        onClick={() => handleDelete(resume.id)}
+                        disabled={deletingId === resume.id}
+                      >
+                        {deletingId === resume.id ? "..." : "Delete"}
+                      </Button>
+                    </div>
                   </div>
-                  <div className="mb-4">
-                    <p className="font-semibold text-gray-900 dark:text-white text-sm">{name}</p>
-                    {jobTitle && <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{jobTitle}</p>}
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Saved {timeAgo(resume.created_at)}</p>
-                  </div>
-                  <div className="flex gap-2 pt-3 border-t border-gray-100 dark:border-slate-800">
-                    <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-xs" onClick={() => handleOpen(resume)}>
-                      Open
-                    </Button>
-                    <Button size="sm" variant="outline" className="flex-1 text-xs" onClick={() => handleDownload(resume)}>
-                      PDF
-                    </Button>
-                    <Button
-                      size="sm" variant="ghost"
-                      className="text-red-500 hover:text-red-700 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs px-2"
-                      onClick={() => handleDelete(resume.id)}
-                      disabled={deletingId === resume.id}
-                    >
-                      {deletingId === resume.id ? "..." : "Delete"}
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                );
+              })}
+            </div>
+          )}
+        </section>
       </main>
     </div>
+
   );
 }
