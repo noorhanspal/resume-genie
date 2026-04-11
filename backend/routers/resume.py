@@ -1,7 +1,12 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from fastapi.responses import Response
 from models.resume import ResumeData, ATSRequest
-from services.llm_service import enhance_resume_with_llm, analyze_ats_match, analyze_uploaded_resume
+from services.llm_service import (
+    enhance_resume_with_llm, 
+    analyze_ats_match, 
+    analyze_uploaded_resume,
+    enhance_resume_from_text
+)
 from services.pdf_service import generate_pdf
 import io
 import pypdf
@@ -68,4 +73,31 @@ async def smart_analyze(file: UploadFile = File(...)):
         result = analyze_uploaded_resume(text)
         return {"success": True, "data": result}
     except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/upload-enhance")
+async def upload_enhance(file: UploadFile = File(...), prompt: str = Form(...)):
+    try:
+        content = await file.read()
+        text = ""
+        filename = file.filename.lower()
+        
+        if filename.endswith(".pdf"):
+            pdf_reader = pypdf.PdfReader(io.BytesIO(content))
+            for page in pdf_reader.pages:
+                text += page.extract_text() + "\n"
+        elif filename.endswith(".docx"):
+            doc = docx.Document(io.BytesIO(content))
+            for para in doc.paragraphs:
+                text += para.text + "\n"
+        else:
+            raise HTTPException(status_code=400, detail="Only PDF and DOCX files are supported.")
+            
+        if not text.strip():
+            raise HTTPException(status_code=400, detail="Could not extract any text from the file.")
+            
+        result_data = enhance_resume_from_text(text, prompt)
+        return {"success": True, "data": result_data}
+    except Exception as e:
+        print(f"Error in upload_enhance: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))

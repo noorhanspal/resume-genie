@@ -196,3 +196,100 @@ Rules:
 
     _log_usage(response.usage, label="Smart Resume Analysis")
     return json.loads(response.choices[0].message.content)
+
+def enhance_resume_from_text(resume_text: str, user_prompt: str) -> dict:
+    prompt = f"""
+You are an expert resume writer and career coach. Your task is to take a raw resume (provided as text) and enhance/modify it according to the user's specific request.
+
+--- RESUME TEXT ---
+{resume_text}
+
+--- USER REQUEST ---
+{user_prompt}
+
+You MUST follow the user request strictly while maintaining high professional standards.
+
+Return the result as a JSON object with TWO main keys: "resume_data" and "enhanced_data".
+
+"resume_data" should match the standard ResumeData structure (raw-ish but parsed).
+"enhanced_data" should contain the AI-optimized versions (Professional Summary, Bullets for experience, etc.)
+
+Return a JSON object with this exact structure:
+{{
+  "resume_data": {{
+    "personal_info": {{
+      "full_name": "...",
+      "email": "...",
+      "phone": "...",
+      "location": "...",
+      "linkedin": "...",
+      "website": "...",
+      "summary": "..."
+    }},
+    "work_experience": [
+      {{
+        "company": "...",
+        "role": "...",
+        "start_date": "...",
+        "end_date": "...",
+        "responsibilities": "..."
+      }}
+    ],
+    "education": [
+      {{
+        "institution": "...",
+        "degree": "...",
+        "field": "...",
+        "graduation_year": "...",
+        "gpa": "..."
+      }}
+    ],
+    "skills": ["...", "..."],
+    "projects": [
+      {{
+        "name": "...",
+        "description": "...",
+        "technologies": "...",
+        "link": "..."
+      }}
+    ],
+    "job_title": "...",
+    "template": "modern"
+  }},
+  "enhanced_data": {{
+    "professional_summary": "2-3 sentence impactful summary",
+    "enhanced_experience": [
+      {{
+        "company": "...",
+        "role": "...",
+        "start_date": "...",
+        "end_date": "...",
+        "bullets": ["Enhanced bullet 1", "Enhanced bullet 2", "..."]
+      }}
+    ],
+    "enhanced_projects": [
+      {{
+        "name": "...",
+        "description": "Enhanced 1-line description",
+        "technologies": "..."
+      }}
+    ]
+  }}
+}}
+
+Rules:
+- Parse all available information from the resume text into resume_data.
+- In enhanced_data, apply the user's instructions to significantly improve the content.
+- Use strong action verbs and measurable metrics in the enhanced bullets.
+- Return ONLY valid JSON, no markdown.
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        response_format={"type": "json_object"},
+        temperature=0.7,
+    )
+
+    _log_usage(response.usage, label="AI Resume Enhancement")
+    return json.loads(response.choices[0].message.content)

@@ -40,6 +40,10 @@ export default function DashboardPage() {
   const { signOut } = useClerk();
   const [resumes, setResumes] = useState<SavedResume[]>([]);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [isEnhancerOpen, setIsEnhancerOpen] = useState(false);
+  const [enhanceFile, setEnhanceFile] = useState<File | null>(null);
+  const [enhancePrompt, setEnhancePrompt] = useState("");
+  const [isEnhancing, setIsEnhancing] = useState(false);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -85,6 +89,44 @@ export default function DashboardPage() {
     setResumes(updated);
     if (user) localStorage.setItem(`resumes_${user.id}`, JSON.stringify(updated));
     setDeletingId(null);
+  };
+
+  const handleEnhance = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!enhanceFile || !enhancePrompt) {
+      alert("Please upload a file and enter a prompt.");
+      return;
+    }
+
+    setIsEnhancing(true);
+    const formData = new FormData();
+    formData.append("file", enhanceFile);
+    formData.append("prompt", enhancePrompt);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/resume/upload-enhance", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Enhancement failed");
+      }
+
+      const result = await response.json();
+      if (result.success && result.data) {
+        // Store in sessionStorage to preview
+        sessionStorage.setItem("resumeData", JSON.stringify(result.data.resume_data));
+        sessionStorage.setItem("enhancedData", JSON.stringify(result.data.enhanced_data));
+        router.push("/preview");
+      }
+    } catch (error: any) {
+      console.error("Enhancement error:", error);
+      alert(error.message || "Failed to enhance resume. Please try again.");
+    } finally {
+      setIsEnhancing(false);
+    }
   };
 
   if (!isLoaded) {
@@ -139,16 +181,16 @@ export default function DashboardPage() {
         </header>
 
         {/* Feature Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-32">
           {/* Create Resume */}
           <Link href="/builder" className="group">
             <div className="glass-card p-10 h-full border-border hover:border-foreground/20">
               <div className="w-12 h-12 rounded-lg bg-surface-100 flex items-center justify-center text-xl mb-8 group-hover:scale-110 transition-transform">
                 ✨
               </div>
-              <h3 className="text-title-small text-foreground mb-3">Create Resume</h3>
+              <h3 className="text-title-small text-foreground mb-3 font-sans">Create</h3>
               <p className="text-body-serif-sm text-foreground/40 mb-8">
-                Build a professional, AI-optimized resume in minutes with our guided builder.
+                Build a professional resume with our guided builder.
               </p>
               <span className="text-button-label text-foreground group-hover:text-destructive transition-colors">
                 Start Building →
@@ -156,15 +198,34 @@ export default function DashboardPage() {
             </div>
           </Link>
 
+          {/* AI Enhancer (New) */}
+          <button 
+            onClick={() => setIsEnhancerOpen(true)}
+            className="group text-left w-full h-full"
+          >
+            <div className="glass-card p-10 h-full border-border hover:border-foreground/20 bg-surface-50/10">
+              <div className="w-12 h-12 rounded-lg bg-surface-100 flex items-center justify-center text-xl mb-8 group-hover:scale-110 transition-transform">
+                🪄
+              </div>
+              <h3 className="text-title-small text-foreground mb-3 font-sans">AI Enhancer</h3>
+              <p className="text-body-serif-sm text-foreground/40 mb-8">
+                Upload existing resume and tell AI how to improve it.
+              </p>
+              <span className="text-button-label text-foreground group-hover:text-destructive transition-colors">
+                Enhance now →
+              </span>
+            </div>
+          </button>
+
           {/* Smart Analysis */}
           <Link href="/smart-analysis" className="group">
             <div className="glass-card p-10 h-full border-border hover:border-foreground/20">
               <div className="w-12 h-12 rounded-lg bg-surface-100 flex items-center justify-center text-xl mb-8 group-hover:scale-110 transition-transform">
                 🧠
               </div>
-              <h3 className="text-title-small text-foreground mb-3">Smart Analysis</h3>
+              <h3 className="text-title-small text-foreground mb-3 font-sans">Analyze</h3>
               <p className="text-body-serif-sm text-foreground/40 mb-8">
-                Upload your existing resume to detect skills gaps and get improvement scores.
+                Detect skills gaps and get improvement scores.
               </p>
               <span className="text-button-label text-foreground group-hover:text-destructive transition-colors">
                 Analyze Now →
@@ -178,9 +239,9 @@ export default function DashboardPage() {
               <div className="w-12 h-12 rounded-lg bg-surface-100 flex items-center justify-center text-xl mb-8 group-hover:scale-110 transition-transform">
                 🎯
               </div>
-              <h3 className="text-title-small text-foreground mb-3">Find Jobs</h3>
+              <h3 className="text-title-small text-foreground mb-3 font-sans">Job Match</h3>
               <p className="text-body-serif-sm text-foreground/40 mb-8">
-                Get matched with hot job openings that perfectly fit your specific skills.
+                Find jobs that perfectly fit your specific skills.
               </p>
               <span className="text-button-label text-foreground group-hover:text-destructive transition-colors">
                 Magic Match →
@@ -259,6 +320,93 @@ export default function DashboardPage() {
           )}
         </section>
       </main>
+
+      {/* Enhancer Modal */}
+      {isEnhancerOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+          <div 
+            className="absolute inset-0 bg-background/40 backdrop-blur-md"
+            onClick={() => !isEnhancing && setIsEnhancerOpen(false)}
+          />
+          <div className="glass-card relative w-full max-w-xl p-10 animate-pop-in overflow-hidden">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-title-small text-foreground font-sans">AI Resume Enhancer</h2>
+              <button 
+                onClick={() => setIsEnhancerOpen(false)}
+                disabled={isEnhancing}
+                className="text-foreground/30 hover:text-destructive transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <form onSubmit={handleEnhance} className="space-y-8">
+              <div>
+                <label className="block text-[11px] font-sans font-medium uppercase tracking-widest text-foreground/40 mb-3">
+                  Upload Resume (PDF/DOCX)
+                </label>
+                <div className="relative group">
+                  <input
+                    type="file"
+                    accept=".pdf,.docx"
+                    onChange={(e) => setEnhanceFile(e.target.files?.[0] || null)}
+                    className="hidden"
+                    id="enhance-upload"
+                  />
+                  <label
+                    htmlFor="enhance-upload"
+                    className="flex flex-col items-center justify-center p-12 border-2 border-dashed border-border group-hover:border-foreground/20 rounded-xl cursor-pointer transition-all bg-surface-100/30"
+                  >
+                    <span className="text-2xl mb-4">{enhanceFile ? "📄" : "📤"}</span>
+                    <span className="text-body-serif-sm text-foreground/60">
+                      {enhanceFile ? enhanceFile.name : "Select your resume file"}
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-sans font-medium uppercase tracking-widest text-foreground/40 mb-3">
+                  What should AI improve?
+                </label>
+                <textarea
+                  value={enhancePrompt}
+                  onChange={(e) => setEnhancePrompt(e.target.value)}
+                  placeholder="Example: Tailor this for a Senior Frontend Role at Google, or make it more professional and data-driven."
+                  className="w-full h-32 bg-surface-100/50 border border-border rounded-xl p-4 text-sm focus:outline-none focus:border-foreground/20 transition-colors resize-none text-foreground placeholder:text-foreground/20 font-serif"
+                />
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setIsEnhancerOpen(false)}
+                  disabled={isEnhancing}
+                  className="flex-1 cursor-button-primary !py-4 !h-auto text-[13px]"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isEnhancing || !enhanceFile || !enhancePrompt}
+                  className="flex-1 cursor-button-primary border-border bg-foreground text-background hover:bg-foreground/90 !py-4 !h-auto text-[13px]"
+                >
+                  {isEnhancing ? (
+                    <span className="flex items-center gap-2">
+                      <span className="animate-spin text-lg">⏳</span> Magic in progress...
+                    </span>
+                  ) : (
+                    "Enhance with AI"
+                  )}
+                </Button>
+              </div>
+            </form>
+
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
+          </div>
+        </div>
+      )}
     </div>
 
   );
