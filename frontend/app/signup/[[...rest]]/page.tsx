@@ -2,15 +2,15 @@ import { SignUp } from "@clerk/nextjs";
 
 export default function SignupPage() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <div className="min-h-screen bg-black flex items-center justify-center px-4 font-sans">
       <div className="flex flex-col items-center gap-12">
         <div className="text-center">
-          <h1 className="text-title-small text-foreground uppercase tracking-widest">
-            Resume Genie
+          <h1 className="text-[27px] text-white uppercase tracking-wider">
+            RESUME GENIE
           </h1>
-          <p className="text-body-serif-sm text-foreground/40 mt-2">Create your free account</p>
+          <p className="text-[14.4px] text-[#7D7D7D] uppercase mt-2">CREATE YOUR FREE ACCOUNT</p>
         </div>
-        <div className="glass-card p-2 rounded-lg">
+        <div className="bg-[#202020] border border-[#494949] p-4 rounded-none">
           <SignUp fallbackRedirectUrl="/" signInUrl="/login" />
         </div>
       </div>

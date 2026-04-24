@@ -99,100 +99,105 @@ export default function Home() {
   const { signOut } = useClerk();
 
   return (
-    <div className="min-h-screen bg-transparent text-foreground">
-      <nav className="glass sticky top-0 z-50 transition-all duration-500 backdrop-blur-2xl px-6 py-3 border-b border-border">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <span className="text-xl font-sans font-normal tracking-tight text-foreground">
-              Resume Genie
-            </span>
-            <div className="hidden md:flex items-center gap-6">
-              <Link href="/smart-analysis" className="text-button-label text-foreground/60 hover:text-destructive transition-colors">Smart Analysis</Link>
-              <Link href="/jobs" className="text-button-label text-foreground/60 hover:text-destructive transition-colors">Find Jobs</Link>
+    <div className="min-h-screen bg-black text-white font-sans">
+      <nav className="fixed top-0 w-full z-50 bg-transparent px-6 py-6 transition-all duration-500">
+        <div className="max-w-[1440px] mx-auto grid grid-cols-3 items-center">
+          <div className="flex items-center gap-8 justify-start">
+            <div className="flex items-center gap-2 cursor-pointer group">
+              <div className="w-6 h-[2px] bg-white group-hover:bg-[#FFC000] transition-colors relative before:absolute before:w-6 before:h-[2px] before:bg-inherit before:-top-2 after:absolute after:w-6 after:h-[2px] after:bg-inherit after:top-2" />
+              <span className="text-[14px] uppercase tracking-[0.2px] ml-4 font-normal hover:text-[#FFC000] transition-colors">Menu</span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
+          
+          <div className="flex justify-center items-center">
+            <span className="text-[24px] uppercase tracking-wider font-normal text-white">
+              Resume Genie
+            </span>
+          </div>
+
+          <div className="flex items-center gap-6 justify-end">
+            <Link href="/smart-analysis" className="text-[12px] uppercase tracking-[0.96px] text-[#FFFFFF] hover:text-[#FFC000] transition-colors hidden md:block">Smart Analysis</Link>
+            <Link href="/jobs" className="text-[12px] uppercase tracking-[0.96px] text-[#FFFFFF] hover:text-[#FFC000] transition-colors hidden md:block">Find Jobs</Link>
             {!isLoaded ? null : user ? (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 ml-4">
                 <Link href="/dashboard">
-                  <Button variant="ghost" className="text-button-label text-foreground hover:text-destructive transition-colors">
+                  <Button variant="ghost" className="uppercase text-[14.4px] tracking-[0.2px] text-white hover:text-[#FFC000] rounded-none border border-transparent">
                     Dashboard
                   </Button>
                 </Link>
                 <Link href="/dashboard">
-                  <Button className="cursor-button-primary">
+                  <Button className="cursor-button-primary uppercase tracking-[0.2px]">
                     Create Resume
                   </Button>
                 </Link>
               </div>
             ) : (
-              <Link href="/dashboard">
-                <Button className="cursor-button-primary">
+              <Link href="/dashboard" className="ml-4">
+                <Button className="cursor-button-primary uppercase tracking-[0.2px]">
                   Login
                 </Button>
               </Link>
             )}
           </div>
-
         </div>
       </nav>
 
 
       {/* Hero */}
-      <section className="py-32 px-6 relative flex flex-col justify-center min-h-[90vh] overflow-hidden bg-background">
-        <div className="max-w-5xl mx-auto text-center relative z-10 animate-pop-in">
-          <div className="inline-block cursor-pill mb-12">
-            AI-Powered Intelligence
+      <section className="py-32 px-6 relative flex flex-col justify-center min-h-screen overflow-hidden bg-black">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black pointer-events-none z-0" />
+        <div className="max-w-[1200px] mx-auto text-center relative z-10 animate-pop-in mt-16">
+          <div className="inline-block cursor-pill mb-12 border border-white/50 text-[#FFFFFF]">
+            AI-POWERED INTELLIGENCE
           </div>
-          <h1 className="text-display-hero text-foreground mb-8">
-            Build your future
+          <h1 className="text-[120px] font-normal leading-[0.92] text-white mb-8 uppercase max-md:text-[80px] max-sm:text-[54px] tracking-tight">
+            BUILD YOUR FUTURE
             <br />
-            <span className="text-foreground/80">in 2 minutes.</span>
+            <span className="text-white/60">IN 2 MINUTES.</span>
           </h1>
-          <p className="text-body-serif text-foreground/60 max-w-2xl mx-auto mb-16 px-4">
-            Turn your raw experience into a high-impact, ATS-optimized resume. 
-            Powered by intelligence to land you more interviews, faster.
+          <p className="text-[18px] text-[#F5F5F5] max-w-2xl mx-auto mb-16 px-4 uppercase leading-[1.56]">
+            TURN YOUR RAW EXPERIENCE INTO A HIGH-IMPACT, ATS-OPTIMIZED RESUME. 
+            POWERED BY INTELLIGENCE TO LAND YOU MORE INTERVIEWS, FASTER.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Link href="/dashboard">
-              <Button size="lg" className="cursor-button-primary !text-lg !px-12 !py-8 bg-surface-300">
-                Create My Resume — It's Free →
+              <Button size="lg" className="cursor-button-primary !text-[16px] !px-[24px] !py-[24px] bg-[#FFC000] text-black hover:bg-[#917300]">
+                CREATE MY RESUME — IT'S FREE
               </Button>
             </Link>
           </div>
-          <div className="flex items-center justify-center gap-10 mt-16 opacity-30">
-            <div className="text-[11px] font-sans font-medium uppercase tracking-widest">No Credit Card</div>
-            <div className="text-[11px] font-sans font-medium uppercase tracking-widest">ATS Optimized</div>
-            <div className="text-[11px] font-sans font-medium uppercase tracking-widest">PDF Ready</div>
+          <div className="flex items-center justify-center gap-10 mt-20 text-[#7D7D7D]">
+            <div className="text-[10px] uppercase tracking-[0.225px]">NO CREDIT CARD</div>
+            <div className="text-[10px] uppercase tracking-[0.225px]">ATS OPTIMIZED</div>
+            <div className="text-[10px] uppercase tracking-[0.225px]">PDF READY</div>
           </div>
         </div>
       </section>
 
 
       {/* Features */}
-      <section className="py-24 px-6 relative bg-surface-100">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-32 px-6 relative bg-[#181818]">
+        <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-24">
-            <h2 className="text-section-heading text-foreground mb-4">
-              Designed for success.
+            <h2 className="text-[54px] uppercase text-white mb-4 leading-[1.19]">
+              DESIGNED FOR SUCCESS.
             </h2>
-            <p className="text-body-serif text-foreground/50 max-w-xl mx-auto">
-              Not just a builder — a complete intelligence platform for your career.
+            <p className="text-[18px] text-[#7D7D7D] uppercase max-w-xl mx-auto leading-[1.56]">
+              NOT JUST A BUILDER — A COMPLETE INTELLIGENCE PLATFORM FOR YOUR CAREER.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {FEATURES.map((f, idx) => (
               <div
                 key={f.title}
-                className="glass-card p-10 group animate-slide-up"
+                className="bg-[#202020] p-10 group animate-slide-up hover:bg-[#202020] transition-colors border-b border-[#000000]"
                 style={{ animationDelay: `${idx * 0.1}s` }}
               >
-                <div className="text-4xl mb-8 grayscale group-hover:grayscale-0 transition-all">
+                <div className="text-4xl mb-8 grayscale group-hover:grayscale-0 transition-all opacity-80">
                   {f.icon}
                 </div>
-                <h3 className="text-title-small text-foreground mb-4">{f.title}</h3>
-                <p className="text-body-serif-sm text-foreground/60 leading-relaxed">{f.description}</p>
+                <h3 className="text-[27px] uppercase text-white mb-4 leading-[1.37]">{f.title}</h3>
+                <p className="text-[16px] text-[#F5F5F5] leading-relaxed uppercase">{f.description}</p>
               </div>
             ))}
           </div>
@@ -200,21 +205,21 @@ export default function Home() {
       </section>
 
       {/* How it Works */}
-      <section className="py-32 px-6 relative">
-        <div className="max-w-5xl mx-auto">
+      <section className="py-32 px-6 relative bg-black">
+        <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-20">
-            <h2 className="text-section-heading text-foreground mb-4">How it works</h2>
-            <p className="text-body-serif text-foreground/50">Four simple steps from blank form to downloaded PDF.</p>
+            <h2 className="text-[54px] text-white uppercase mb-4 leading-[1.19]">HOW IT WORKS</h2>
+            <p className="text-[18px] text-[#7D7D7D] uppercase leading-[1.56]">FOUR SIMPLE STEPS FROM BLANK FORM TO DOWNLOADED PDF.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             {STEPS.map((step) => (
               <div key={step.number} className="flex gap-8 group">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-surface-300 text-foreground flex items-center justify-center text-[11px] font-sans font-bold tracking-tighter">
+                <div className="flex-shrink-0 w-12 h-12 bg-transparent border border-white/30 text-[#FFC000] flex items-center justify-center text-[14px] font-sans font-bold tracking-[0.2px] rounded-none">
                   {step.number}
                 </div>
                 <div>
-                  <h3 className="text-title-small text-foreground mb-2">{step.title}</h3>
-                  <p className="text-body-serif-sm text-foreground/50 leading-relaxed">{step.description}</p>
+                  <h3 className="text-[27px] text-white mb-2 uppercase leading-[1.37]">{step.title}</h3>
+                  <p className="text-[16px] text-[#F5F5F5] leading-relaxed uppercase">{step.description}</p>
                 </div>
               </div>
             ))}
@@ -224,29 +229,29 @@ export default function Home() {
 
 
       {/* Templates */}
-      <section className="py-24 px-6 relative bg-surface-100">
-        <div className="max-w-5xl mx-auto">
+      <section className="py-32 px-6 relative bg-[#181818]">
+        <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-20">
-            <h2 className="text-section-heading text-foreground mb-4">3 templates to choose from</h2>
-            <p className="text-body-serif text-foreground/50">
-              Switch between designs instantly on the preview page — no need to regenerate.
+            <h2 className="text-[54px] text-white uppercase mb-4 leading-[1.19]">3 TEMPLATES TO CHOOSE FROM</h2>
+            <p className="text-[18px] text-[#7D7D7D] uppercase leading-[1.56]">
+              SWITCH BETWEEN DESIGNS INSTANTLY ON THE PREVIEW PAGE — NO NEED TO REGENERATE.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {TEMPLATES.map((t) => (
               <div
                 key={t.name}
-                className="glass-card hover:shadow-2xl transition-all"
+                className="bg-[#202020] hover:bg-[#000000] transition-colors duration-300 border-b border-[#000000] group"
               >
-                <div className={`${t.accent} h-20 w-full opacity-10`} />
+                <div className={`bg-[#494949] h-32 w-full opacity-20`} />
                 <div className="p-8 space-y-4">
-                  <div className="h-2 bg-foreground/20 rounded w-3/4" />
-                  <div className="h-2 bg-foreground/10 rounded w-1/2" />
-                  <div className="h-px bg-border my-4" />
-                  <p className="text-title-small text-foreground">{t.name}</p>
-                  <p className="text-body-serif-sm text-foreground/50">{t.description}</p>
-                  <span className="inline-block cursor-pill">
-                    Free
+                  <div className="h-2 bg-white/20 w-3/4 rounded-none" />
+                  <div className="h-2 bg-white/10 w-1/2 rounded-none" />
+                  <div className="h-px bg-[#494949] my-6" />
+                  <p className="text-[27px] text-white uppercase">{t.name}</p>
+                  <p className="text-[16px] text-[#7D7D7D] uppercase leading-relaxed group-hover:text-white transition-colors">{t.description}</p>
+                  <span className="inline-block px-2 py-1 bg-[#969696] text-black text-[10px] uppercase tracking-[0.225px] mt-4">
+                    FREE
                   </span>
                 </div>
               </div>
@@ -256,33 +261,33 @@ export default function Home() {
       </section>
 
       {/* CTA Banner */}
-      <section className="py-32 px-6 relative">
-        <div className="max-w-5xl mx-auto text-center glass-card p-20 relative overflow-hidden bg-surface-300">
-          <h2 className="text-section-heading text-foreground mb-6">
-            Ready to build your resume?
+      <section className="py-40 px-6 relative bg-black">
+        <div className="max-w-[1200px] mx-auto text-center bg-[#202020] p-20 relative overflow-hidden border-b border-black">
+          <h2 className="text-[54px] text-white uppercase mb-6 leading-[1.19]">
+            READY TO BUILD YOUR RESUME?
           </h2>
-          <p className="text-body-serif text-foreground/50 mb-12 max-w-lg mx-auto">
-            Create a free account and build your AI-powered resume in minutes.
+          <p className="text-[18px] text-[#7D7D7D] uppercase mb-12 max-w-lg mx-auto leading-[1.56]">
+            CREATE A FREE ACCOUNT AND BUILD YOUR AI-POWERED RESUME IN MINUTES.
           </p>
           <Link href="/dashboard">
-            <Button size="lg" className="cursor-button-primary !text-lg !px-12 !py-8">
-              Get Started for Free →
+            <Button size="lg" className="cursor-button-primary bg-[#FFC000] text-black hover:bg-[#917300] px-[24px] py-[24px] text-[16px]">
+              GET STARTED FOR FREE
             </Button>
           </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-background py-16 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-8">
-          <div className="flex flex-col gap-2">
-            <span className="text-title-small text-foreground">Resume Genie</span>
-            <p className="text-body-serif-sm text-foreground/40">AI-powered resume builder for the modern job seeker.</p>
+      <footer className="bg-[#000000] py-16 px-6 border-t border-[#202020]">
+        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-8">
+          <div className="flex flex-col gap-2 text-center sm:text-left">
+            <span className="text-[24px] text-white uppercase">RESUME GENIE</span>
+            <p className="text-[14px] text-[#7D7D7D] uppercase tracking-[-0.42px]">AI-POWERED RESUME BUILDER FOR THE MODERN JOB SEEKER.</p>
           </div>
-          <div className="flex items-center gap-8 text-[11px] font-sans font-medium uppercase tracking-widest text-foreground/40">
-            <span>Built with Next.js</span>
-            <span>Tailwind CSS</span>
-            <span>Clerk Auth</span>
+          <div className="flex items-center gap-8 text-[12px] uppercase tracking-[0.96px] text-[#7D7D7D]">
+            <span>NEXT.JS</span>
+            <span>TAILWIND CSS</span>
+            <span>CLERK AUTH</span>
           </div>
         </div>
       </footer>

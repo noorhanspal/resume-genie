@@ -194,44 +194,43 @@ export default function PreviewPage() {
     : "";
 
   return (
-    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-500 py-10 px-4 antialiased">
+    <div className="min-h-screen bg-black text-white transition-colors duration-500 py-10 px-4 antialiased font-sans">
       {/* Action Bar */}
-      <div className="max-w-4xl mx-auto mb-10 flex flex-col sm:flex-row gap-6 justify-between items-center glass-card p-6 rounded-lg animate-pop-in transition-all duration-500">
+      <div className="max-w-[1200px] mx-auto mb-10 flex flex-col sm:flex-row gap-6 justify-between items-center bg-[#202020] p-6 border border-[#494949] animate-pop-in transition-all duration-500">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" className="cursor-button-primary !bg-transparent hover:!bg-surface-300" onClick={() => router.push("/builder")}>
-            ← Edit
+          <Button variant="ghost" className="cursor-button-primary bg-transparent text-white hover:bg-[#181818] border border-white/20 hover:border-white rounded-none px-6" onClick={() => router.push("/builder")}>
+            ← EDIT
           </Button>
-          <ThemeToggle />
         </div>
         <div className="flex flex-wrap justify-center gap-3">
           <Button
             variant="ghost"
             onClick={() => setIsEditing(!isEditing)}
-            className={`cursor-button-primary transition-all ${isEditing ? '!bg-foreground !text-background' : ''}`}
+            className={`cursor-button-primary transition-all rounded-none px-6 ${isEditing ? 'bg-white text-black hover:bg-[#e6e6e6]' : 'bg-transparent text-white border border-white/20 hover:border-white hover:bg-[#181818]'}`}
           >
-            {isEditing ? "✏️ Submit Edits" : "✏️ Manual Edit"}
+            {isEditing ? "✏️ SUBMIT EDITS" : "✏️ MANUAL EDIT"}
           </Button>
           <Button
             variant="ghost"
             onClick={() => setShowAts((v) => !v)}
-            className={`cursor-button-primary transition-all ${showAts ? '!bg-accent !text-white' : ''}`}
+            className={`cursor-button-primary transition-all rounded-none px-6 ${showAts ? 'bg-[#FFC000] text-black hover:bg-[#917300]' : 'bg-transparent text-white border border-white/20 hover:border-white hover:bg-[#181818]'}`}
           >
-            {showAts ? "Hide Check" : "🎯 ATS Match"}
+            {showAts ? "HIDE CHECK" : "🎯 ATS MATCH"}
           </Button>
           <Button
             variant="ghost"
             onClick={handleSave}
             disabled={saving}
-            className="cursor-button-primary"
+            className="cursor-button-primary bg-transparent text-white border border-white/20 hover:border-white hover:bg-[#181818] rounded-none px-6"
           >
-            {saving ? "Saving..." : saveStatus === "saved" ? "✓ Saved" : "💾 Save"}
+            {saving ? "SAVING..." : saveStatus === "saved" ? "✓ SAVED" : "💾 SAVE"}
           </Button>
           <Button
-            className="cursor-button-primary !bg-foreground !text-background hover:!text-destructive"
+            className="cursor-button-primary bg-[#FFC000] text-black hover:bg-[#917300] rounded-none px-6 border-none"
             onClick={handleDownload}
             disabled={downloading}
           >
-            {downloading ? "Generating..." : "📥 Download PDF"}
+            {downloading ? "GENERATING..." : "📥 DOWNLOAD PDF"}
           </Button>
         </div>
       </div>
@@ -239,11 +238,11 @@ export default function PreviewPage() {
 
       {/* ATS Panel */}
       {showAts && (
-        <div className="max-w-4xl mx-auto mb-6 glass-panel rounded-2xl overflow-hidden">
-          <div className="bg-purple-500/10 border-b border-purple-500/20 px-6 py-4">
-            <h2 className="font-bold text-foreground">ATS Match Checker</h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Paste the job description to see how well your resume matches it.
+        <div className="max-w-[1200px] mx-auto mb-6 bg-[#202020] border border-[#494949] rounded-none overflow-hidden">
+          <div className="bg-[#181818] border-b border-[#494949] px-6 py-4">
+            <h2 className="text-[16px] uppercase font-normal text-white tracking-[0.2px]">ATS MATCH CHECKER</h2>
+            <p className="text-[12px] text-[#7D7D7D] uppercase tracking-[0.96px] mt-1">
+              PASTE THE JOB DESCRIPTION TO SEE HOW WELL YOUR RESUME MATCHES IT.
             </p>
           </div>
 
@@ -251,20 +250,20 @@ export default function PreviewPage() {
             <Textarea
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
-              placeholder="Paste the full job description here..."
+              placeholder="PASTE THE FULL JOB DESCRIPTION HERE..."
               rows={6}
-              className="text-sm resize-none"
+              className="text-[16px] bg-[#181818] border-[#494949] text-white focus:border-white resize-none rounded-none placeholder:text-[#494949] uppercase"
             />
             <Button
               onClick={handleATSCheck}
               disabled={atsLoading || !jobDescription.trim()}
-              className="bg-purple-600 hover:bg-purple-700 text-white"
+              className="cursor-button-primary bg-[#FFC000] hover:bg-[#917300] text-black rounded-none px-6"
             >
-              {atsLoading ? "Analyzing..." : "Analyze Match"}
+              {atsLoading ? "ANALYZING..." : "ANALYZE MATCH"}
             </Button>
 
             {atsError && (
-              <p className="text-sm text-red-600">{atsError}</p>
+              <p className="text-[14px] text-[#cf2d56] uppercase">{atsError}</p>
             )}
 
             {/* ATS Results */}
@@ -333,24 +332,24 @@ export default function PreviewPage() {
       )}
 
       {/* Template Selector */}
-      <div className="max-w-4xl mx-auto mb-12 glass-card p-10 rounded-lg animate-pop-in">
+      <div className="max-w-[1200px] mx-auto mb-12 bg-[#202020] border border-[#494949] p-10 rounded-none animate-pop-in">
         <div className="flex items-center gap-3 mb-8">
-          <h2 className="text-title-small text-foreground uppercase tracking-wider">Choose template</h2>
+          <h2 className="text-[27px] text-white uppercase tracking-wider">CHOOSE TEMPLATE</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {TEMPLATES.map((t) => (
             <button
               key={t.id}
               onClick={() => setSelectedTemplate(t.id)}
-              className={`flex flex-col border rounded-lg p-5 text-left transition-all duration-300 ${
+              className={`flex flex-col border p-5 text-left transition-all duration-300 rounded-none ${
                 selectedTemplate === t.id
-                  ? "border-foreground bg-surface-300"
-                  : "border-border hover:border-foreground/30 hover:-translate-y-1"
+                  ? "border-[#FFC000] bg-[#181818]"
+                  : "border-[#494949] hover:border-white hover:bg-[#181818]"
               }`}
             >
-              <p className="text-button-label text-foreground mb-1">{t.label}</p>
-              <p className="text-[10px] font-sans font-medium uppercase tracking-widest text-foreground/40">{t.id}</p>
-              <div className={`h-[1px] w-8 mt-4 transition-all duration-500 ${selectedTemplate === t.id ? "bg-foreground w-12" : "bg-border"}`} />
+              <p className="text-[16px] text-white uppercase mb-1">{t.label}</p>
+              <p className="text-[10px] font-sans font-medium uppercase tracking-[0.96px] text-[#7D7D7D]">{t.id}</p>
+              <div className={`h-[2px] w-8 mt-4 transition-all duration-500 ${selectedTemplate === t.id ? "bg-[#FFC000] w-12" : "bg-[#494949]"}`} />
             </button>
           ))}
         </div>
@@ -358,7 +357,7 @@ export default function PreviewPage() {
 
 
       {/* Resume Preview */}
-      <div className={`max-w-4xl mx-auto bg-white shadow-[0_32px_128px_-32px_rgba(0,0,0,0.2)] dark:shadow-[0_32px_128px_-32px_rgba(0,0,0,0.6)] rounded-3xl p-10 overflow-hidden relative z-10 transition-all duration-700 animate-slide-up print:shadow-none print:bg-transparent ${isEditing ? 'ring-[12px] ring-blue-500/10 border-2 border-blue-500' : 'border border-white/40 dark:border-white/10'}`}>
+      <div className={`max-w-[1200px] mx-auto bg-white p-10 relative z-10 transition-all duration-700 animate-slide-up print:shadow-none print:bg-transparent ${isEditing ? 'ring-[4px] ring-[#FFC000]/50 border-2 border-[#FFC000]' : 'border border-[#494949]'}`}>
         <div key={selectedTemplate} className="animate-pop-in">
           {selectedTemplate === "classic" && (
             <ClassicTemplate 

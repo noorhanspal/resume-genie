@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Newsreader, JetBrains_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
-
 
 const inter = Inter({
   variable: "--font-inter",
@@ -32,15 +32,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans antialiased transition-colors duration-500`}>
-
+    <ClerkProvider 
+      appearance={{
+        baseTheme: dark,
+        variables: {
+          colorPrimary: "#FFC000",
+          colorBackground: "#202020",
+          colorInputBackground: "#181818",
+          colorInputText: "#ffffff",
+          colorText: "#ffffff",
+          colorTextSecondary: "#7D7D7D",
+          borderRadius: "0px",
+        },
+        elements: {
+          card: "border border-[#494949] rounded-none shadow-none",
+          formButtonPrimary: "bg-[#FFC000] text-black hover:bg-[#917300] uppercase font-bold tracking-wider",
+        }
+      }}
+    >
+      <html lang="en" suppressHydrationWarning className="dark">
+        <body className={`${inter.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans antialiased transition-colors duration-500 bg-black text-white`}>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange={false}
+            defaultTheme="dark"
+            forcedTheme="dark"
           >
             {children}
           </ThemeProvider>

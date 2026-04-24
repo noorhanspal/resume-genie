@@ -148,28 +148,25 @@ export default function BuilderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent py-20 px-4 text-foreground transition-colors duration-500 antialiased">
-      <div className="max-w-3xl mx-auto glass-card p-12 relative animate-pop-in">
-        <div className="absolute top-8 right-8">
-          <ThemeToggle />
-        </div>
+    <div className="min-h-screen bg-black py-20 px-4 text-white transition-colors duration-500 antialiased font-sans">
+      <div className="max-w-[1200px] mx-auto bg-[#202020] p-12 relative animate-pop-in border border-[#494949]">
         
         {/* Header */}
         <div className="mb-12 text-center">
-          <h1 className="text-section-heading text-foreground mb-4">
-            Create your resume
+          <h1 className="text-[54px] uppercase text-white mb-4 leading-[1.19]">
+            CREATE YOUR RESUME
           </h1>
           <div className="flex items-center justify-center gap-4">
-            <p className="text-[11px] font-sans font-medium uppercase tracking-[0.2em] text-foreground/40">
-              Step {step + 1} / {STEPS.length} — {STEPS[step]}
+            <p className="text-[12px] font-sans font-medium uppercase tracking-[0.96px] text-[#7D7D7D]">
+              STEP {step + 1} / {STEPS.length} — {STEPS[step]}
             </p>
           </div>
         </div>
 
         {/* Progress */}
-        <div className="mb-16 relative h-[2px] w-full bg-border rounded-full overflow-hidden">
+        <div className="mb-16 relative h-[2px] w-full bg-[#181818] overflow-hidden">
            <div 
-             className="absolute top-0 left-0 h-full bg-foreground transition-all duration-700 ease-out"
+             className="absolute top-0 left-0 h-full bg-[#FFC000] transition-all duration-700 ease-out"
              style={{ width: `${progress}%` }}
            />
         </div>
@@ -180,39 +177,39 @@ export default function BuilderPage() {
           <div className="space-y-6 animate-pop-in">
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Full Name *</Label>
+                <Label className="text-[12px] font-bold uppercase tracking-[0.96px] text-[#7D7D7D] ml-1">FULL NAME *</Label>
                 <Input
-                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  className="bg-[#181818] border border-[#494949] focus:border-white h-12 px-4 text-[16px] text-white uppercase placeholder:text-[#494949] rounded-none"
                   value={data.personal_info.full_name}
                   onChange={(e) => updatePersonal("full_name", e.target.value)}
-                  placeholder="Ali Ahmed"
+                  placeholder="ALI AHMED"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Target Job Title</Label>
+                <Label className="text-[12px] font-bold uppercase tracking-[0.96px] text-[#7D7D7D] ml-1">TARGET JOB TITLE</Label>
                 <Input
-                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  className="bg-[#181818] border border-[#494949] focus:border-white h-12 px-4 text-[16px] text-white uppercase placeholder:text-[#494949] rounded-none"
                   value={data.job_title}
                   onChange={(e) => setData((prev) => ({ ...prev, job_title: e.target.value }))}
-                  placeholder="Software Engineer"
+                  placeholder="SOFTWARE ENGINEER"
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Email *</Label>
+                <Label className="text-[12px] font-bold uppercase tracking-[0.96px] text-[#7D7D7D] ml-1">EMAIL *</Label>
                 <Input
-                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  className="bg-[#181818] border border-[#494949] focus:border-white h-12 px-4 text-[16px] text-white uppercase placeholder:text-[#494949] rounded-none"
                   type="email"
                   value={data.personal_info.email}
                   onChange={(e) => updatePersonal("email", e.target.value)}
-                  placeholder="ali@example.com"
+                  placeholder="ALI@EXAMPLE.COM"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Phone *</Label>
+                <Label className="text-[12px] font-bold uppercase tracking-[0.96px] text-[#7D7D7D] ml-1">PHONE *</Label>
                 <Input
-                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  className="bg-[#181818] border border-[#494949] focus:border-white h-12 px-4 text-[16px] text-white uppercase placeholder:text-[#494949] rounded-none"
                   value={data.personal_info.phone}
                   onChange={(e) => updatePersonal("phone", e.target.value)}
                   placeholder="+92 300 1234567"
@@ -220,41 +217,41 @@ export default function BuilderPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Location *</Label>
+              <Label className="text-[12px] font-bold uppercase tracking-[0.96px] text-[#7D7D7D] ml-1">LOCATION *</Label>
               <Input
-                className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                className="bg-[#181818] border border-[#494949] focus:border-white h-12 px-4 text-[16px] text-white uppercase placeholder:text-[#494949] rounded-none"
                 value={data.personal_info.location}
                 onChange={(e) => updatePersonal("location", e.target.value)}
-                placeholder="Lahore, Pakistan"
+                placeholder="LAHORE, PAKISTAN"
               />
             </div>
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">LinkedIn (optional)</Label>
+                <Label className="text-[12px] font-bold uppercase tracking-[0.96px] text-[#7D7D7D] ml-1">LINKEDIN (OPTIONAL)</Label>
                 <Input
-                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  className="bg-[#181818] border border-[#494949] focus:border-white h-12 px-4 text-[16px] text-white uppercase placeholder:text-[#494949] rounded-none"
                   value={data.personal_info.linkedin}
                   onChange={(e) => updatePersonal("linkedin", e.target.value)}
-                  placeholder="linkedin.com/in/aliahmed"
+                  placeholder="LINKEDIN.COM/IN/ALIAHMED"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Website/Portfolio</Label>
+                <Label className="text-[12px] font-bold uppercase tracking-[0.96px] text-[#7D7D7D] ml-1">WEBSITE/PORTFOLIO</Label>
                 <Input
-                  className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 h-11 px-4 rounded-xl font-medium"
+                  className="bg-[#181818] border border-[#494949] focus:border-white h-12 px-4 text-[16px] text-white uppercase placeholder:text-[#494949] rounded-none"
                   value={data.personal_info.website}
                   onChange={(e) => updatePersonal("website", e.target.value)}
-                  placeholder="aliahmed.dev"
+                  placeholder="ALIAHMED.DEV"
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Brief Summary</Label>
+              <Label className="text-[12px] font-bold uppercase tracking-[0.96px] text-[#7D7D7D] ml-1">BRIEF SUMMARY</Label>
               <Textarea
-                className="glass-card bg-white/20 dark:bg-slate-950/20 border-white/40 dark:border-white/10 focus:ring-2 ring-blue-500/20 p-4 rounded-2xl font-medium"
+                className="bg-[#181818] border border-[#494949] focus:border-white p-4 text-[16px] text-white uppercase placeholder:text-[#494949] resize-none rounded-none"
                 value={data.personal_info.summary}
                 onChange={(e) => updatePersonal("summary", e.target.value)}
-                placeholder="3+ years of experience in web development..."
+                placeholder="3+ YEARS OF EXPERIENCE IN WEB DEVELOPMENT..."
                 rows={4}
               />
             </div>
@@ -401,40 +398,41 @@ export default function BuilderPage() {
 
         {/* Step: Skills */}
         {step === 3 && (
-          <Card>
+          <Card className="bg-[#202020] border-[#494949] rounded-none">
             <CardHeader>
-              <CardTitle>Skills</CardTitle>
+              <CardTitle className="text-[24px] uppercase text-white">SKILLS</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex gap-2">
                 <Input
+                  className="bg-[#181818] border border-[#494949] focus:border-white h-12 px-4 text-[16px] text-white uppercase placeholder:text-[#494949] rounded-none"
                   value={skillInput}
                   onChange={(e) => setSkillInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && addSkill()}
-                  placeholder="React, Python, Docker..."
+                  placeholder="REACT, PYTHON, DOCKER..."
                 />
-                <Button onClick={addSkill} className="bg-blue-600 hover:bg-blue-700 text-white">
-                  Add
+                <Button onClick={addSkill} className="cursor-button-primary bg-[#FFC000] hover:bg-[#917300] text-black h-12 rounded-none px-8">
+                  ADD
                 </Button>
               </div>
-              <p className="text-xs text-gray-400">
-                Press Enter or click Add
+              <p className="text-[12px] uppercase text-[#7D7D7D] tracking-[0.96px]">
+                PRESS ENTER OR CLICK ADD
               </p>
-              <div className="flex flex-wrap gap-2 min-h-[60px] p-3 border rounded-lg bg-gray-50">
+              <div className="flex flex-wrap gap-2 min-h-[60px] p-4 border border-[#494949] bg-[#181818]">
                 {data.skills.length === 0 && (
-                  <p className="text-gray-400 text-sm">No skills added yet...</p>
+                  <p className="text-[#7D7D7D] text-[16px] uppercase">NO SKILLS ADDED YET...</p>
                 )}
                 {data.skills.map((skill) => (
                   <Badge
                     key={skill}
-                    className="cursor-pointer bg-blue-100 text-blue-800 hover:bg-red-100 hover:text-red-800 transition-colors"
+                    className="cursor-pointer bg-transparent border border-white/30 text-white hover:bg-[#cf2d56] hover:border-[#cf2d56] transition-colors rounded-none px-3 py-1 uppercase text-[12px] tracking-[0.96px]"
                     onClick={() => removeSkill(skill)}
                   >
                     {skill} ×
                   </Badge>
                 ))}
               </div>
-              <p className="text-xs text-gray-400">Click a skill to remove it</p>
+              <p className="text-[12px] uppercase text-[#7D7D7D] tracking-[0.96px]">CLICK A SKILL TO REMOVE IT</p>
             </CardContent>
           </Card>
         )}
@@ -499,35 +497,35 @@ export default function BuilderPage() {
         )}
 
         {/* Navigation */}
-        <div className="flex justify-between mt-16 pt-12 border-t border-border">
+        <div className="flex justify-between mt-16 pt-12 border-t border-[#494949]">
           <Button
             variant="ghost"
-            className="cursor-button-primary !bg-transparent hover:!bg-surface-200"
+            className="cursor-button-primary bg-transparent border border-white/30 text-white hover:border-white hover:bg-[#181818] rounded-none px-8 h-12"
             onClick={() => setStep((s) => s - 1)}
             disabled={step === 0}
           >
-            ← Back
+            ← BACK
           </Button>
 
           {step < STEPS.length - 1 ? (
             <Button
-              className="cursor-button-primary"
+              className="cursor-button-primary bg-[#FFC000] text-black hover:bg-[#917300] rounded-none px-8 h-12"
               onClick={() => setStep((s) => s + 1)}
             >
-              Continue →
+              CONTINUE →
             </Button>
           ) : (
             <Button
-              className="cursor-button-primary !bg-foreground !text-background hover:!text-destructive"
+              className="cursor-button-primary bg-[#FFC000] text-black hover:bg-[#917300] rounded-none px-8 h-12"
               onClick={handleGenerate}
               disabled={loading}
             >
               {loading ? (
                 <span className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-background/50 border-t-background rounded-full animate-spin" />
-                  Generating...
+                  <div className="w-4 h-4 border-2 border-black/50 border-t-black rounded-full animate-spin" />
+                  GENERATING...
                 </span>
-              ) : "✨ Generate Resume"}
+              ) : "✨ GENERATE RESUME"}
             </Button>
           )}
         </div>
