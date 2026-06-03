@@ -63,7 +63,7 @@ export default function DashboardPage() {
 
   const handleDownload = async (resume: SavedResume) => {
     try {
-      const res = await fetch("http://localhost:8000/api/resume/generate-pdf", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/resume/generate-pdf`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(resume.resume_data),
@@ -104,7 +104,7 @@ export default function DashboardPage() {
     formData.append("prompt", enhancePrompt);
 
     try {
-      const response = await fetch("http://localhost:8000/api/resume/upload-enhance", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/resume/upload-enhance`, {
         method: "POST",
         body: formData,
       });

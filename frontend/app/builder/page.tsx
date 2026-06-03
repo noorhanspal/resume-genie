@@ -127,7 +127,7 @@ export default function BuilderPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("http://localhost:8000/api/resume/enhance", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/resume/enhance`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

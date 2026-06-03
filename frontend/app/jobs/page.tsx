@@ -62,7 +62,7 @@ export default function JobsFinder() {
     const skillsArray = skills.split(",").map(s => s.trim()).filter(Boolean);
 
     try {
-      const response = await fetch("http://localhost:8000/api/jobs/match", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/jobs/match`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
